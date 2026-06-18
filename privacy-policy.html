@@ -1,17 +1,70 @@
 <!doctype html>
-<html lang="ko">
+<html lang="en">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Chrome Dashboard — 개인정보처리방침 / Privacy Policy</title>
+<title>Chrome Dashboard — Privacy Policy / 개인정보처리방침</title>
+<script>
+  // Korean if the browser UI language starts with "ko", otherwise English.
+  document.documentElement.lang = (navigator.language || navigator.userLanguage || 'en').toLowerCase().indexOf('ko') === 0 ? 'ko' : 'en';
+</script>
 <style>
   body{max-width:760px;margin:40px auto;padding:0 20px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;line-height:1.6;color:#1c1c1e;background:#fff}
   h1{font-size:1.6rem} h2{font-size:1.15rem;margin-top:2em} code{background:#f2f2f7;padding:1px 5px;border-radius:5px}
   .muted{color:#6e6e73;font-size:.9rem} table{border-collapse:collapse;width:100%;margin:1em 0}
   td,th{border:1px solid #e0e0e5;padding:8px 10px;text-align:left;font-size:.92rem;vertical-align:top}
+  .lang-switch{float:right;font-size:.85rem}
+  .lang-switch a{color:#0a84ff;text-decoration:none;cursor:pointer}
+  .en{display:revert} .ko{display:none}
+  html[lang="ko"] .en{display:none} html[lang="ko"] .ko{display:revert}
 </style>
 </head>
 <body>
+<div class="lang-switch">
+  <a onclick="document.documentElement.lang='ko'">한국어</a> · <a onclick="document.documentElement.lang='en'">English</a>
+</div>
+
+<!-- ============ ENGLISH ============ -->
+<div class="en">
+<h1>Chrome Dashboard — Privacy Policy</h1>
+<p class="muted">Last updated: 2026-06-18 · Homepage: <a href="https://gridwidget.de/">gridwidget.de</a></p>
+
+<p>Chrome Dashboard ("the Extension") replaces the Chrome new-tab page with a personal dashboard. The Extension does not collect, transmit, or sell your data to the developer. All data stays inside your browser and your own Google account.</p>
+
+<h2>1. Data we process and why</h2>
+<table>
+<tr><th>Data</th><th>Source / permission</th><th>Purpose</th><th>Where it is stored</th></tr>
+<tr><td>Widget layout, settings, theme, wallpaper</td><td><code>storage</code></td><td>Keep your dashboard configured</td><td>Local browser (<code>chrome.storage</code>)</td></tr>
+<tr><td>Bookmarks</td><td><code>bookmarks</code></td><td>Show shortcut widgets</td><td>Processed only, never stored or transmitted</td></tr>
+<tr><td>Google profile / email</td><td>OAuth <code>userinfo.profile/email</code></td><td>Show the signed-in account</td><td>Local browser cache</td></tr>
+<tr><td>Google Calendar events</td><td>OAuth <code>calendar.events</code></td><td>View and add events in the calendar widget</td><td>Your Google account (not stored by us)</td></tr>
+<tr><td>Google Tasks</td><td>OAuth <code>tasks</code></td><td>View and add tasks in the to-do widget</td><td>Your Google account (not stored by us)</td></tr>
+<tr><td>Notes file</td><td>OAuth <code>drive.file</code></td><td>Sync notes as a visible file in your Drive</td><td>Your Google Drive</td></tr>
+<tr><td>Location (lat/long)</td><td>User input / browser</td><td>Weather and sunrise/sunset lookup</td><td>Local; sent only to Open-Meteo when used</td></tr>
+</table>
+
+<h2>2. Third-party transfers</h2>
+<p>The Extension calls the following external APIs directly from your browser. Calls happen only when you enable the related feature, and never pass through a developer server.</p>
+<ul>
+<li><b>Google APIs</b> (<code>googleapis.com</code>) — Calendar, Tasks, Drive, profile. <a href="https://policies.google.com/privacy">Google Privacy Policy</a></li>
+<li><b>Open-Meteo</b> — weather / sunrise (coordinates only, no account info)</li>
+<li><b>Yahoo Finance</b> — public quote data for the markets widget</li>
+</ul>
+<p>The Extension does not use your Google data for advertising, machine-learning training, or any purpose beyond the stated features, and does not transfer or sell it to third parties. This complies with the Google API Services User Data Policy, including the Limited Use requirements.</p>
+
+<h2>3. Data retention and deletion</h2>
+<p>Settings and layout are removed when you uninstall the Extension. You can revoke the Google connection anytime via the in-app logout or your <a href="https://myaccount.google.com/permissions">Google Account permissions</a>. Notes stored in Drive can be deleted by you directly in Drive.</p>
+
+<h2>4. Children</h2>
+<p>The Extension is not directed to children under 13.</p>
+
+<h2>5. Contact</h2>
+<p>Privacy inquiries: <a href="mailto:april774936@gmail.com">april774936@gmail.com</a><br/>
+Homepage: <a href="https://gridwidget.de/">https://gridwidget.de/</a> · This policy: <a href="https://gridwidget.de/privacy-policy.html">https://gridwidget.de/privacy-policy.html</a></p>
+</div>
+
+<!-- ============ KOREAN ============ -->
+<div class="ko">
 <h1>Chrome Dashboard — 개인정보처리방침</h1>
 <p class="muted">최종 수정일: 2026-06-18 · 홈페이지: <a href="https://gridwidget.de/">gridwidget.de</a></p>
 
@@ -49,9 +102,6 @@
 <h2>5. 문의</h2>
 <p>개인정보 관련 문의: <a href="mailto:april774936@gmail.com">april774936@gmail.com</a><br/>
 앱 홈페이지: <a href="https://gridwidget.de/">https://gridwidget.de/</a> · 본 방침 URL: <a href="https://gridwidget.de/privacy-policy.html">https://gridwidget.de/privacy-policy.html</a></p>
-
-<hr/>
-<h1 id="en">Privacy Policy (English Summary)</h1>
-<p>Chrome Dashboard replaces the new-tab page with a personal dashboard. It does <b>not</b> collect, transmit, or sell your data to the developer. All data stays in your browser and your own Google account. Google data (Calendar, Tasks, Drive via <code>drive.file</code>, profile/email) is accessed only to power the widgets you enable and is never used for advertising or model training, in compliance with the Google API Services User Data Policy, including the Limited Use requirements. Weather/sunrise use Open-Meteo (coordinates only); the markets widget uses public Yahoo Finance quotes. You can revoke access anytime via the in-app logout or your <a href="https://myaccount.google.com/permissions">Google account permissions</a>. Contact: april774936@gmail.com.</p>
+</div>
 </body>
 </html>
