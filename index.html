@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Chrome Dashboard — 나만의 새 탭 대시보드</title>
+<meta name="description" content="크롬 새 탭을 위젯으로 채우는 iOS풍 개인 대시보드. 시계·캘린더·할 일·메모·날씨·시세를 한 화면에." />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%230a84ff'/><text x='50' y='68' font-size='56' text-anchor='middle' fill='white' font-family='sans-serif'>D</text></svg>" />
+<style>
+  :root{
+    --bg:#0b1020; --card:rgba(255,255,255,0.06); --stroke:rgba(255,255,255,0.12);
+    --text:#f5f5f7; --muted:#a6adbb; --accent:#0a84ff; --accent2:#5e5ce6;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
+    color:var(--text); background:var(--bg); line-height:1.6;
+    background-image:
+      radial-gradient(60% 50% at 15% 0%, rgba(94,92,230,0.35), transparent 60%),
+      radial-gradient(55% 45% at 90% 10%, rgba(10,132,255,0.30), transparent 60%),
+      radial-gradient(50% 50% at 50% 100%, rgba(48,209,88,0.16), transparent 60%);
+    background-attachment:fixed;
+  }
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  header{padding:28px 0 0}
+  .nav{display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .brand{display:flex;align-items:center;gap:12px;font-weight:700;font-size:1.05rem}
+  .logo{width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,var(--accent),var(--accent2));
+    display:grid;place-items:center;color:#fff;font-weight:800;font-size:1.2rem;box-shadow:inset 0 1px 0 rgba(255,255,255,.25)}
+  .nav a{color:var(--muted);text-decoration:none;font-size:.95rem;margin-left:18px}
+  .nav a:hover{color:var(--text)}
+  .hero{text-align:center;padding:72px 0 40px}
+  .hero h1{font-size:clamp(2.1rem,5vw,3.4rem);line-height:1.1;margin:0 0 18px;letter-spacing:-.02em}
+  .hero p{font-size:clamp(1.05rem,2.2vw,1.3rem);color:var(--muted);max-width:640px;margin:0 auto 30px}
+  .cta{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));
+    color:#fff;text-decoration:none;font-weight:600;padding:14px 26px;border-radius:14px;
+    box-shadow:0 10px 30px rgba(10,132,255,.35),inset 0 1px 0 rgba(255,255,255,.3);transition:transform .15s}
+  .cta:hover{transform:translateY(-2px)}
+  .cta.secondary{background:var(--card);border:1px solid var(--stroke);box-shadow:none;margin-left:10px}
+  .shot{margin:40px auto 0;max-width:880px;border-radius:22px;overflow:hidden;
+    border:1px solid var(--stroke);box-shadow:0 30px 80px rgba(0,0,0,.5)}
+  .shot img{display:block;width:100%}
+  section{padding:56px 0}
+  h2{font-size:clamp(1.5rem,3vw,2.1rem);text-align:center;margin:0 0 8px;letter-spacing:-.01em}
+  .sub{text-align:center;color:var(--muted);max-width:620px;margin:0 auto 40px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px}
+  .feat{background:var(--card);border:1px solid var(--stroke);border-radius:20px;padding:22px;
+    backdrop-filter:blur(20px);box-shadow:inset 0 1px 0 rgba(255,255,255,.08)}
+  .feat .ic{font-size:1.7rem;margin-bottom:10px}
+  .feat h3{margin:0 0 6px;font-size:1.08rem}
+  .feat p{margin:0;color:var(--muted);font-size:.95rem}
+  .perm{background:var(--card);border:1px solid var(--stroke);border-radius:20px;padding:6px 22px;backdrop-filter:blur(20px)}
+  .perm details{padding:16px 0;border-bottom:1px solid var(--stroke)}
+  .perm details:last-child{border-bottom:none}
+  .perm summary{cursor:pointer;font-weight:600;list-style:none}
+  .perm summary::-webkit-details-marker{display:none}
+  .perm summary::before{content:"›";display:inline-block;margin-right:10px;color:var(--accent);transition:transform .2s}
+  .perm details[open] summary::before{transform:rotate(90deg)}
+  .perm p{color:var(--muted);margin:10px 0 0 24px;font-size:.95rem}
+  footer{border-top:1px solid var(--stroke);padding:34px 0 60px;text-align:center;color:var(--muted);font-size:.9rem}
+  footer a{color:var(--muted)}
+  .badge{display:inline-block;font-size:.78rem;color:var(--muted);border:1px solid var(--stroke);
+    border-radius:999px;padding:4px 12px;margin-bottom:20px;background:var(--card)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <nav class="nav">
+      <div class="brand"><span class="logo">D</span> Chrome Dashboard</div>
+      <div>
+        <a href="#features">기능</a>
+        <a href="#privacy">개인정보</a>
+        <a href="privacy-policy.html">정책</a>
+      </div>
+    </nav>
+  </header>
+
+  <div class="hero">
+    <span class="badge">Chrome 새 탭 확장 · iOS풍 위젯 대시보드</span>
+    <h1>새 탭이, 매일 쓰는<br/>나만의 대시보드가 됩니다.</h1>
+    <p>시계·캘린더·할 일·메모·날씨·시세까지. 위젯을 자유롭게 배치하는 깔끔한 개인용 대시보드로 크롬 새 탭을 대체하세요.</p>
+    <a class="cta" href="https://chromewebstore.google.com/detail/jppmdhafklhcaipkjlgmoonnngpeeege" target="_blank" rel="noopener">Chrome 웹스토어에서 설치</a>
+    <a class="cta secondary" href="#features">기능 둘러보기</a>
+    <div class="shot">
+      <img src="screenshot-1-dashboard.png" alt="Chrome Dashboard 메인 화면" />
+    </div>
+  </div>
+</div>
+
+<section id="features">
+  <div class="wrap">
+    <h2>한 화면에 필요한 모든 것</h2>
+    <p class="sub">위젯을 길게 눌러 편집하고, 드래그로 옮기고, 모서리를 끌어 크기를 바꿉니다. 모두 로컬에서, 빠르게.</p>
+    <div class="grid">
+      <div class="feat"><div class="ic">🕐</div><h3>시계 &amp; 타이머</h3><p>아날로그·디지털·세계시계, 스톱워치, 타이머, D-Day까지 초 단위로.</p></div>
+      <div class="feat"><div class="ic">📅</div><h3>캘린더 &amp; 할 일</h3><p>Google 캘린더 일정과 Tasks 할 일을 보고, 대시보드에서 바로 추가합니다.</p></div>
+      <div class="feat"><div class="ic">📝</div><h3>메모</h3><p>메모를 본인 Google Drive의 보이는 파일로 동기화해 어디서나 편집.</p></div>
+      <div class="feat"><div class="ic">☀️</div><h3>날씨 &amp; 일출일몰</h3><p>Open-Meteo 기반 무료 날씨·대기질·일출일몰 정보.</p></div>
+      <div class="feat"><div class="ic">📈</div><h3>시세 &amp; 환율</h3><p>주식·암호화폐·환율을 위젯 하나로 빠르게 확인.</p></div>
+      <div class="feat"><div class="ic">🎯</div><h3>생산성</h3><p>목표 링·포모도로·계산기·바로가기·검색바로 흐름을 유지.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="privacy">
+  <div class="wrap">
+    <h2>당신의 데이터는 당신 것입니다</h2>
+    <p class="sub">Chrome Dashboard는 데이터를 개발자 서버로 수집·전송·판매하지 않습니다. 모든 데이터는 사용자의 브라우저와 본인 Google 계정 안에만 머무릅니다. 아래 권한은 켠 기능에만 사용됩니다.</p>
+    <div class="perm">
+      <details><summary>Google 캘린더 (calendar.events)</summary>
+        <p>캘린더 위젯에서 다가오는 일정을 보여주고, 대시보드에서 직접 일정을 추가/수정할 수 있게 합니다. 일정은 사용자의 Google 계정에만 저장되며 개발자 서버로 전송되지 않습니다.</p></details>
+      <details><summary>Google Tasks (tasks)</summary>
+        <p>할 일 위젯에서 작업 목록을 보여주고, 대시보드에서 할 일을 추가·완료 처리할 수 있게 합니다. 데이터는 사용자의 Google Tasks에만 머무릅니다.</p></details>
+      <details><summary>Google Drive (drive.file)</summary>
+        <p>메모 위젯이 만든/연 파일에만 접근합니다. 메모를 사용자 Drive의 보이는 파일로 저장해 다른 기기에서도 편집할 수 있게 합니다. 사용자의 다른 Drive 파일에는 접근하지 않습니다.</p></details>
+      <details><summary>프로필 / 이메일 (userinfo)</summary>
+        <p>로그인한 계정을 화면에 표시하기 위해서만 사용합니다.</p></details>
+    </div>
+    <p class="sub" style="margin-top:26px">자세한 내용은 <a href="privacy-policy.html" style="color:var(--accent)">개인정보처리방침</a>을 확인하세요. 권한은 <a href="https://myaccount.google.com/permissions" style="color:var(--accent)">Google 계정 권한 페이지</a>에서 언제든 해지할 수 있습니다.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Chrome Dashboard · 개인 개발 프로젝트<br/>
+    문의: <a href="mailto:april774936@gmail.com">april774936@gmail.com</a> · <a href="privacy-policy.html">개인정보처리방침</a></p>
+    <p>© 2026 Chrome Dashboard. Hosted on gridwidget.de</p>
+  </div>
+</footer>
+</body>
+</html>
