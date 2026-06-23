@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GridWidget</title>
+  <script>
+    (function () {
+      var saved = localStorage.getItem('gridwidget-lang');
+      if (saved === 'ko' || saved === 'ja') {
+        window.location.replace(saved + '.html');
+        return;
+      }
+      if (!saved || saved === 'en') {
+        var nav = (navigator.language || navigator.userLanguage || '').toLowerCase();
+        if (nav.startsWith('ko')) {
+          window.location.replace('ko.html');
+        } else if (nav.startsWith('ja')) {
+          window.location.replace('ja.html');
+        } else {
+          window.location.replace('en.html');
+        }
+      }
+    })();
+  </script>
+  <noscript>
+    <meta http-equiv="refresh" content="0;url=en.html" />
+  </noscript>
+</head>
+<body></body>
+</html>
