@@ -279,8 +279,8 @@
   <div class="inner">
     <h2>Simple pricing · <span style="color:var(--muted); font-size:0.6em; font-weight:500;">심플한 가격</span></h2>
     <p class="pricing-sub">
-      All features are free while we're in early access. A Pro plan is coming.<br>
-      <span style="font-size:0.9em;">얼리 액세스 기간에는 모든 기능이 무료입니다. Pro 플랜은 출시 예정.</span>
+      Start free. Upgrade when you're ready.<br>
+      <span style="font-size:0.9em;">무료로 시작하고, 준비되면 업그레이드하세요.</span>
     </p>
     <div class="pricing-grid">
 
@@ -303,37 +303,71 @@
         </a>
       </div>
 
-      <!-- PRO (Coming Soon) -->
+      <!-- PRO -->
       <div class="plan featured">
-        <div class="plan-badge">Coming soon · 출시 예정</div>
-        <div class="plan-tier">Pro · 프로</div>
-        <div class="plan-price">$3<span>/mo</span></div>
-        <div class="plan-cadence">billed annually · 연간 결제</div>
-        <ul class="plan-features">
+        <div class="plan-badge">Pro · 프로</div>
+        <div class="plan-tier" style="margin-top:8px;">Choose your plan · 플랜 선택</div>
+        <ul class="plan-features" style="margin-top:16px;">
           <li>Everything in Free · Free 전부 포함</li>
           <li>Notion memo sync · 노션 메모 동기화</li>
-          <li>Multi-layout profiles · 레이아웃 프로필 복수</li>
-          <li>Custom widget themes · 위젯 커스텀 테마</li>
           <li>Priority support · 우선 지원</li>
-          <li class="dim">More coming · 더 많은 기능 예정</li>
+          <li>All future features · 향후 기능 전부</li>
         </ul>
-        <!--
-          ACTIVATION: When Polar checkout is ready —
-          1. Delete the <button> below
-          2. Uncomment the <a> tag
-          3. Replace __POLAR_CHECKOUT_LINK__ with your real URL from polar.sh dashboard
-          4. Remove the "Coming soon" badge above
-          5. Add the Polar script at the bottom of <body>
-        -->
-        <button class="plan-btn pro-soon" disabled>Notify me · 알림 받기</button>
-        <!--
-        <a
-          class="plan-btn pro"
-          href="__POLAR_CHECKOUT_LINK__"
-          data-polar-checkout
-          data-polar-checkout-theme="dark"
-        >Get Pro · Pro 구매</a>
-        -->
+
+        <!-- Pricing options -->
+        <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:20px;">
+
+          <!-- Monthly -->
+          <div style="display:flex; align-items:center; justify-content:space-between;
+                      background:#1a1a2e; border:1px solid var(--border); border-radius:10px; padding:12px 16px;">
+            <div>
+              <div style="font-size:0.82rem; color:var(--muted);">Monthly · 월간</div>
+              <div style="font-weight:700; font-size:1.1rem;">$1.99<span style="font-size:0.8rem; color:var(--muted); font-weight:400;">/mo</span></div>
+            </div>
+            <a href="__POLAR_MONTHLY_LINK__"
+               data-polar-checkout data-polar-checkout-theme="dark"
+               style="padding:7px 14px; border-radius:8px; background:var(--accent); color:#fff;
+                      font-size:0.82rem; font-weight:600; text-decoration:none; white-space:nowrap;">
+              Get Pro
+            </a>
+          </div>
+
+          <!-- Annual (highlighted) -->
+          <div style="display:flex; align-items:center; justify-content:space-between;
+                      background:#1a0a2e; border:1.5px solid var(--accent); border-radius:10px; padding:12px 16px; position:relative;">
+            <div style="position:absolute; top:-10px; left:12px; background:var(--accent);
+                        color:#fff; font-size:0.7rem; font-weight:700; padding:2px 10px; border-radius:10px;">
+              BEST VALUE
+            </div>
+            <div>
+              <div style="font-size:0.82rem; color:var(--muted);">Annual · 연간</div>
+              <div style="font-weight:700; font-size:1.1rem;">$12.99<span style="font-size:0.8rem; color:var(--muted); font-weight:400;">/yr</span></div>
+              <div style="font-size:0.72rem; color:#9966ff;">≈ $1.08/mo · 45% off</div>
+            </div>
+            <a href="__POLAR_ANNUAL_LINK__"
+               data-polar-checkout data-polar-checkout-theme="dark"
+               style="padding:7px 14px; border-radius:8px; background:var(--accent); color:#fff;
+                      font-size:0.82rem; font-weight:600; text-decoration:none; white-space:nowrap;">
+              Get Pro
+            </a>
+          </div>
+
+          <!-- Lifetime -->
+          <div style="display:flex; align-items:center; justify-content:space-between;
+                      background:#1a1a2e; border:1px solid var(--border); border-radius:10px; padding:12px 16px;">
+            <div>
+              <div style="font-size:0.82rem; color:var(--muted);">Lifetime · 평생</div>
+              <div style="font-weight:700; font-size:1.1rem;">$19.99<span style="font-size:0.8rem; color:var(--muted); font-weight:400;"> once</span></div>
+            </div>
+            <a href="__POLAR_LIFETIME_LINK__"
+               data-polar-checkout data-polar-checkout-theme="dark"
+               style="padding:7px 14px; border-radius:8px; background:var(--accent); color:#fff;
+                      font-size:0.82rem; font-weight:600; text-decoration:none; white-space:nowrap;">
+              Get Pro
+            </a>
+          </div>
+
+        </div>
       </div>
     </div>
     <p class="pricing-note">No ads. No tracking. Your data stays in your browser · 광고 없음. 추적 없음. 데이터는 브라우저에만 저장됩니다.</p>
