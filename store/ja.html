@@ -163,22 +163,9 @@
     .reveal.visible { opacity:1; transform:translateY(0); }
     .d1{transition-delay:.08s} .d2{transition-delay:.16s} .d3{transition-delay:.24s} .d4{transition-delay:.32s} .d5{transition-delay:.4s} .d6{transition-delay:.48s}
 
-    /* === Customize / Jiggle === */
-    #customize { padding:96px 24px; background:var(--bg); }
-    .customize-grid { display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center; }
-    .jiggle-demo { background:var(--surface); border:1px solid var(--border); border-radius:22px; padding:24px; display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    /* === Interactive Demo === */
     @keyframes jig { 0%,100%{transform:rotate(-1.8deg) scale(1.01)} 50%{transform:rotate(1.8deg) scale(1.01)} }
-    .jw { background:rgba(22,22,42,.95); border:1px solid rgba(139,92,246,.4); border-radius:14px; padding:14px 12px; position:relative; animation:jig .3s ease-in-out infinite; box-shadow:0 0 0 1.5px rgba(139,92,246,.18); }
-    .jw:nth-child(2){animation-delay:.07s} .jw:nth-child(3){animation-delay:.14s} .jw:nth-child(4){animation-delay:.21s}
-    .jw-x { position:absolute; top:-8px; right:-8px; width:22px; height:22px; border-radius:50%; background:#ef4444; display:flex; align-items:center; justify-content:center; font-size:.72rem; font-weight:900; color:#fff; box-shadow:0 2px 8px rgba(239,68,68,.5); }
-    .jw-label { font-size:.65rem; font-weight:700; color:var(--muted); letter-spacing:.06em; text-transform:uppercase; margin-bottom:8px; }
-    .jw-drag { position:absolute; bottom:8px; right:8px; font-size:.7rem; color:var(--border2); }
-    .customize-points { list-style:none; margin-top:28px; display:flex; flex-direction:column; gap:11px; }
-    .customize-points li { display:flex; align-items:center; gap:11px; font-size:.93rem; color:var(--sub); }
-    .customize-points li span.ck { color:var(--green); font-weight:800; flex-shrink:0; }
-    .theme-row { display:flex; gap:7px; margin-top:16px; align-items:center; flex-wrap:wrap; }
-    .tswatch { width:26px; height:26px; border-radius:7px; border:1.5px solid rgba(255,255,255,.14); flex-shrink:0; }
-    .theme-label { font-size:.78rem; color:var(--muted); margin-left:4px; }
+    #demo-live { background:var(--bg); }
     /* === Google === */
     #google { background:var(--surface); padding:96px 24px; }
     .google-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:16px; margin-top:48px; }
@@ -311,76 +298,67 @@
   </div>
 </section>
 
-<!-- === カスタマイズ / ジグルモード === -->
-<section id="customize">
-  <div class="inner">
-    <div class="customize-grid">
-      <div class="jiggle-demo reveal">
-        <div class="jw">
-          <div class="jw-x">×</div>
-          <div class="jw-label">🕐 時計</div>
-          <div style="font-size:1.9rem;font-weight:800;letter-spacing:-.02em;">09:41</div>
-          <div style="font-size:.72rem;color:var(--muted);margin-top:3px;">火曜日</div>
-          <div class="jw-drag">⠿</div>
-        </div>
-        <div class="jw">
-          <div class="jw-x">×</div>
-          <div class="jw-label">☀️ 天気</div>
-          <div style="font-size:1.9rem;font-weight:800;">24°</div>
-          <div style="font-size:.72rem;color:var(--sub);margin-top:3px;">晴れ</div>
-          <div class="jw-drag">⠿</div>
-        </div>
-        <div class="jw">
-          <div class="jw-x">×</div>
-          <div class="jw-label">🎯 集中</div>
-          <div style="font-size:1.5rem;font-weight:800;color:#c4b5fd;">18:32</div>
-          <div style="font-size:.7rem;color:var(--muted);margin-top:3px;">ポモドーロ</div>
-          <div class="jw-drag">⠿</div>
-        </div>
-        <div class="jw">
-          <div class="jw-x">×</div>
-          <div class="jw-label">💪 習慣</div>
-          <div style="font-size:.8rem;color:var(--green);font-weight:700;margin-top:4px;">7日 🔥</div>
-          <div style="height:3px;background:var(--border);border-radius:2px;margin-top:8px;"><div style="width:100%;height:100%;background:var(--green);border-radius:2px;"></div></div>
-          <div class="jw-drag">⠿</div>
-        </div>
-        <div style="grid-column:1/-1;text-align:center;padding:10px 0 2px;">
-          <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(139,92,246,.18);border:1px solid rgba(139,92,246,.4);border-radius:20px;padding:6px 18px;font-size:.78rem;font-weight:700;color:#c4b5fd;">
-            ✦ ジグルモード — 長押しで編集
-          </div>
-        </div>
-      </div>
-      <div>
-        <div class="eyebrow-small">自分仕様に</div>
-        <h2 class="reveal">あなたのレイアウト、<br>あなたのルール。</h2>
-        <p class="reveal d1" style="color:var(--sub);font-size:1rem;line-height:1.75;margin-bottom:8px;">ウィジェットを長押しするとジグルモードに。ドラッグで並べ替え、角を引っ張ってリサイズ、× タップで削除。完成したらグリッドをロック — iPhoneのホーム画面みたいに。</p>
-        <ul class="customize-points reveal d2">
-          <li><span class="ck">✓</span> iOSスタイルのドラッグ＆リサイズグリッド</li>
-          <li><span class="ck">✓</span> レイアウトロックで誤操作防止</li>
-          <li><span class="ck">✓</span> デバイス別レイアウト自動保存（ノートPC ≠ デスクトップ）</li>
-          <li><span class="ck">✓</span> 初回インストール時に4種類のスターターパック</li>
-          <li><span class="ck">✓</span> Import / Export フルバックアップ</li>
-        </ul>
-        <div class="reveal d3" style="margin-top:28px;">
-          <div style="font-size:.8rem;color:var(--muted);margin-bottom:10px;font-weight:600;">10種類以上の背景テーマ</div>
-          <div class="theme-row">
-            <div class="tswatch" style="background:linear-gradient(135deg,#1e1e32,#2d2d5a);"></div>
-            <div class="tswatch" style="background:linear-gradient(135deg,#0f0f1a,#1a0533);"></div>
-            <div class="tswatch" style="background:linear-gradient(135deg,#0a0a0a,#1a1a2e);"></div>
-            <div class="tswatch" style="background:linear-gradient(135deg,#0d1117,#161b22);"></div>
-            <div class="tswatch" style="background:linear-gradient(135deg,#1a0a2e,#2d1b5e);"></div>
-            <div class="tswatch" style="background:linear-gradient(135deg,#002244,#001a33);"></div>
-            <div class="tswatch" style="background:linear-gradient(135deg,#0d0d0d,#1a1a1a);"></div>
-            <div class="tswatch" style="background:linear-gradient(135deg,#1a1a2e,#16213e);"></div>
-            <div class="tswatch" style="background:linear-gradient(135deg,#2d1b2e,#4a1942);"></div>
-            <div class="tswatch" style="background:radial-gradient(ellipse at top,#0a0020,#000);"></div>
-            <span class="theme-label">+ カスタム画像URL</span>
-          </div>
-        </div>
+<!-- === インタラクティブデモ === -->
+<section id="demo-live">
+  <div style="text-align:center;padding:80px 24px 36px;">
+    <div class="eyebrow-small">今すぐ体験</div>
+    <h2 class="reveal" style="margin-top:14px;">あなたのレイアウト、<br>あなたのルール。今すぐ。</h2>
+    <p class="section-sub reveal d1">ウィジェットをドラッグしてみてください。<strong>Edit</strong>でジグルモード。テーマをクリックするとページ全体の背景が変わります。</p>
+  </div>
+  <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:18px;flex-wrap:wrap;padding:0 24px;">
+    <span style="font-size:.76rem;color:var(--muted);font-weight:600;">テーマ:</span>
+    <div id="themeStrip" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;"></div>
+  </div>
+  <div style="padding:0 24px;max-width:960px;margin:0 auto;">
+    <div id="demoArena" style="position:relative;background:rgba(15,15,28,.7);border:1px solid var(--border);border-radius:20px;overflow:hidden;min-height:400px;touch-action:none;">
+      <div id="arenaGrid" style="position:absolute;inset:0;opacity:0;pointer-events:none;background-image:radial-gradient(circle,rgba(139,92,246,.35) 1px,transparent 1px);background-size:28px 28px;transition:opacity .3s;border-radius:20px;"></div>
+      <div style="position:absolute;bottom:14px;right:14px;display:flex;gap:8px;z-index:20;">
+        <button id="editBtn" onclick="demoToggleEdit()" style="padding:7px 14px;border-radius:9px;background:rgba(139,92,246,.2);border:1px solid rgba(139,92,246,.4);color:#c4b5fd;font-size:.76rem;font-weight:700;cursor:pointer;transition:all .2s;">✦ レイアウト編集</button>
+        <button onclick="demoReset()" style="padding:7px 14px;border-radius:9px;background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--muted);font-size:.76rem;font-weight:600;cursor:pointer;">↺ リセット</button>
       </div>
     </div>
   </div>
+  <div id="demoTray" style="display:none;padding:14px 24px;max-width:960px;margin:10px auto 0;">
+    <div style="font-size:.76rem;color:var(--muted);margin-bottom:8px;font-weight:600;">削除済 — クリックで復元:</div>
+    <div id="trayChips" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
+  </div>
+  <div style="text-align:center;padding:44px 24px 80px;">
+    <p style="font-size:.86rem;color:var(--muted);margin-bottom:18px;">本物には19種のウィジェット、Google連携、デバイス別レイアウト保存があります。</p>
+    <a class="btn-install" href="https://chromewebstore.google.com/detail/jppmdhafklhcaipkjlgmoonnngpeeege">✓ Chromeに無料でインストール</a>
+  </div>
 </section>
+<script>
+window._DL='レイアウト編集';
+window._DD=[
+  {id:'Clock',icon:'🕐',label:'時計',html:'<div id="dwClockTime" style="font-size:1.8rem;font-weight:800;letter-spacing:-.02em;line-height:1;">09:41</div><div style="font-size:.7rem;color:var(--muted);margin-top:5px;">火曜日 6月24日</div>',dl:[16,16,160,100],mob:[8,8,138,90]},
+  {id:'Weather',icon:'☀️',label:'天気',html:'<div style="font-size:2rem;font-weight:800;line-height:1;">24°</div><div style="font-size:.78rem;color:var(--sub);margin-top:4px;">東京 · 晴れ</div><div style="font-size:.68rem;color:var(--muted);margin-top:2px;">↑28° ↓19°</div>',dl:[192,16,158,100],mob:[154,8,150,90]},
+  {id:'Focus',icon:'🎯',label:'集中タイマー',html:'<div style="position:relative;width:76px;height:76px;margin:2px auto 0;"><svg width="76" height="76" style="transform:rotate(-90deg)"><circle cx="38" cy="38" r="30" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="5"/><circle cx="38" cy="38" r="30" fill="none" stroke="var(--accent)" stroke-width="5" stroke-dasharray="188" stroke-dashoffset="58" stroke-linecap="round"/></svg><div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;"><div style="font-size:1.1rem;font-weight:800;">18:32</div><div style="font-size:.55rem;color:var(--muted);">集中</div></div></div>',dl:[366,16,157,130],mob:[8,108,290,120]},
+  {id:'Stocks',icon:'📈',label:'株価',html:'<div style="display:flex;flex-direction:column;gap:7px;"><div style="display:flex;justify-content:space-between;font-size:.84rem;"><span style="font-weight:700;">AAPL</span><span style="color:#34d399;font-weight:600;">+1.2%</span></div><div style="display:flex;justify-content:space-between;font-size:.84rem;"><span style="font-weight:700;">NVDA</span><span style="color:#34d399;font-weight:600;">+3.4%</span></div><div style="display:flex;justify-content:space-between;font-size:.84rem;"><span style="font-weight:700;">TSLA</span><span style="color:#f87171;font-weight:600;">-0.8%</span></div></div>',dl:[16,133,183,120],mob:[8,245,138,110]},
+  {id:'Habits',icon:'💪',label:'習慣トラッカー',html:'<div style="font-size:.78rem;"><div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="color:var(--sub);">🏃 ランニング</span><span style="color:#34d399;font-weight:700;">7日 🔥</span></div><div style="display:flex;gap:3px;margin-bottom:10px;"><div style="width:15px;height:15px;border-radius:3px;background:#34d399;"></div><div style="width:15px;height:15px;border-radius:3px;background:#34d399;"></div><div style="width:15px;height:15px;border-radius:3px;background:#34d399;"></div><div style="width:15px;height:15px;border-radius:3px;background:#34d399;"></div><div style="width:15px;height:15px;border-radius:3px;background:#34d399;"></div><div style="width:15px;height:15px;border-radius:3px;background:#34d399;"></div><div style="width:15px;height:15px;border-radius:3px;background:#34d399;"></div></div><div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="color:var(--sub);">📖 読書</span><span style="color:#60a5fa;font-weight:700;">4日</span></div><div style="display:flex;gap:3px;"><div style="width:15px;height:15px;border-radius:3px;background:#60a5fa;"></div><div style="width:15px;height:15px;border-radius:3px;background:#60a5fa;"></div><div style="width:15px;height:15px;border-radius:3px;background:#60a5fa;"></div><div style="width:15px;height:15px;border-radius:3px;background:#60a5fa;"></div><div style="width:15px;height:15px;border-radius:3px;background:rgba(255,255,255,.08);"></div><div style="width:15px;height:15px;border-radius:3px;background:rgba(255,255,255,.08);"></div><div style="width:15px;height:15px;border-radius:3px;background:rgba(255,255,255,.08);"></div></div></div>',dl:[215,133,192,120],mob:[154,245,148,110]},
+  {id:'Quote',icon:'💬',label:'今日の言葉',html:'<div style="font-size:.82rem;line-height:1.65;font-style:italic;color:#c4b5fd;">&ldquo;未来を予測する最良の方法は、未来を創ることだ。&rdquo;</div><div style="font-size:.7rem;color:var(--muted);margin-top:9px;">— アラン・ケイ</div>',dl:[16,271,252,100],mob:null},
+  {id:'Calendar',icon:'📅',label:'カレンダー',html:'<div style="display:flex;flex-direction:column;gap:6px;"><div style="background:rgba(139,92,246,.18);border-left:2px solid var(--accent);padding:5px 8px;border-radius:5px;font-size:.75rem;color:var(--sub);">10:00 チームスタンドアップ</div><div style="background:rgba(99,102,241,.15);border-left:2px solid #6366f1;padding:5px 8px;border-radius:5px;font-size:.75rem;color:var(--sub);">14:30 デザインレビュー</div></div>',dl:[284,271,244,100],mob:null},
+];
+(function(){
+var TH=[{n:'Cosmic',bg:'#16162a',sf:'#1f1f3a',br:'#38387a',ac:'#8b5cf6',sw:'linear-gradient(135deg,#16162a,#4a3a7a)'},{n:'Midnight',bg:'#090912',sf:'#12121f',br:'#252538',ac:'#8b5cf6',sw:'linear-gradient(135deg,#090912,#1a1a35)'},{n:'Aurora',bg:'#071812',sf:'#0d2a1c',br:'#1a4a32',ac:'#34d399',sw:'linear-gradient(135deg,#071812,#1a5a30)'},{n:'Rose',bg:'#1a0d12',sf:'#2a1520',br:'#4a2535',ac:'#f472b6',sw:'linear-gradient(135deg,#1a0d12,#4a2040)'},{n:'Ocean',bg:'#061522',sf:'#0d2238',br:'#1a3a58',ac:'#38bdf8',sw:'linear-gradient(135deg,#061522,#0d3060)'},{n:'Ember',bg:'#1a0f07',sf:'#2a1a0f',br:'#4a2a18',ac:'#fb923c',sw:'linear-gradient(135deg,#1a0f07,#5a2a10)'}];
+var strip=document.getElementById('themeStrip');
+TH.forEach(function(t,i){var b=document.createElement('button');b.title=t.n;b.style.cssText='width:28px;height:28px;border-radius:8px;background:'+t.sw+';border:2px solid '+(i===0?t.ac:'rgba(255,255,255,.12)')+';cursor:pointer;transition:transform .15s,border-color .15s;flex-shrink:0;';b.onclick=function(){demoTheme(i);};strip.appendChild(b);});
+function demoTheme(idx){var t=TH[idx],r=document.documentElement.style;r.setProperty('--bg',t.bg);r.setProperty('--surface',t.sf);r.setProperty('--border',t.br);r.setProperty('--accent',t.ac);r.setProperty('--accent2',t.ac);r.setProperty('--border2',t.ac+'88');strip.querySelectorAll('button').forEach(function(b,i){b.style.borderColor=i===idx?TH[i].ac:'rgba(255,255,255,.12)';b.style.transform=i===idx?'scale(1.2)':'scale(1)';});}
+var arena=document.getElementById('demoArena'),arenaGrid=document.getElementById('arenaGrid'),editMode=false,dWidgets={};
+function getPos(d){var w=arena.offsetWidth,mob=w<480,p=mob&&d.mob?d.mob:d.dl;return p?{x:p[0],y:p[1],w:p[2],h:p[3]}:null;}
+function mkWidget(def){var pos=getPos(def);if(!pos)return;var el=document.createElement('div');el.id='dw'+def.id;el.dataset.did=def.id;el.style.cssText='position:absolute;left:'+pos.x+'px;top:'+pos.y+'px;width:'+pos.w+'px;min-height:'+pos.h+'px;background:rgba(15,15,28,.92);border:1px solid var(--border);border-radius:14px;padding:13px 12px;box-shadow:0 4px 18px rgba(0,0,0,.35);cursor:grab;user-select:none;touch-action:none;box-sizing:border-box;';var lbl=document.createElement('div');lbl.style.cssText='font-size:.6rem;font-weight:700;color:var(--muted);letter-spacing:.07em;text-transform:uppercase;margin-bottom:8px;';lbl.textContent=def.icon+' '+def.label;var xb=document.createElement('div');xb.className='dwx';xb.innerHTML='&times;';xb.style.cssText='position:absolute;top:-9px;right:-9px;width:22px;height:22px;border-radius:50%;background:#ef4444;display:none;align-items:center;justify-content:center;font-size:.82rem;font-weight:900;color:#fff;box-shadow:0 2px 8px rgba(239,68,68,.4);cursor:pointer;z-index:5;';xb.onclick=function(e){e.stopPropagation();rmWidget(def.id);};var body=document.createElement('div');body.innerHTML=def.html;el.appendChild(xb);el.appendChild(lbl);el.appendChild(body);setupDrag(el);arena.appendChild(el);dWidgets[def.id]=el;el.style.opacity='0';el.style.transform='scale(.9) translateY(10px)';requestAnimationFrame(function(){el.style.transition='opacity .3s,transform .3s';el.style.opacity='1';el.style.transform='';setTimeout(function(){el.style.transition='';},320);});}
+function setupDrag(el){var sx,sy,ex,ey,active=false;el.addEventListener('pointerdown',function(e){if(e.target.className==='dwx'||e.target.closest&&e.target.closest('.dwx'))return;active=true;el.setPointerCapture(e.pointerId);var r=el.getBoundingClientRect(),ar=arena.getBoundingClientRect();sx=e.clientX;sy=e.clientY;ex=r.left-ar.left;ey=r.top-ar.top;el.style.cursor='grabbing';el.style.zIndex='50';el.style.boxShadow='0 16px 48px rgba(0,0,0,.5),0 0 0 2px var(--accent)';el.style.transform='scale(1.04)';if(editMode)el.style.animation='none';e.preventDefault();});el.addEventListener('pointermove',function(e){if(!active)return;var ar=arena.getBoundingClientRect();el.style.left=Math.max(0,Math.min(ex+(e.clientX-sx),ar.width-el.offsetWidth))+'px';el.style.top=Math.max(0,Math.min(ey+(e.clientY-sy),arena.offsetHeight-el.offsetHeight))+'px';});el.addEventListener('pointerup',function(e){if(!active)return;active=false;el.releasePointerCapture(e.pointerId);el.style.cursor='grab';el.style.zIndex='';el.style.boxShadow='0 4px 18px rgba(0,0,0,.35)';el.style.transform='';if(editMode)el.style.animation='jig .3s ease-in-out infinite';});}
+function demoToggleEdit(){editMode=!editMode;var btn=document.getElementById('editBtn');arenaGrid.style.opacity=editMode?'1':'0';Object.values(dWidgets).forEach(function(el){var xb=el.querySelector('.dwx');if(xb)xb.style.display=editMode?'flex':'none';el.style.animation=editMode?'jig .3s ease-in-out infinite':'';});if(editMode){btn.textContent='✓ 完了';btn.style.background='rgba(52,211,153,.2)';btn.style.borderColor='rgba(52,211,153,.5)';btn.style.color='#34d399';}else{btn.textContent='✦ '+window._DL;btn.style.background='rgba(139,92,246,.2)';btn.style.borderColor='rgba(139,92,246,.4)';btn.style.color='#c4b5fd';}}
+var removedW={};
+function rmWidget(id){var el=dWidgets[id];if(!el)return;el.style.transition='opacity .2s,transform .2s';el.style.opacity='0';el.style.transform='scale(.8)';setTimeout(function(){el.remove();delete dWidgets[id];},220);removedW[id]=true;var def=window._DD.find(function(d){return d.id===id;});document.getElementById('demoTray').style.display='block';var chip=document.createElement('button');chip.id='chip'+id;chip.style.cssText='display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;background:rgba(139,92,246,.12);border:1px solid rgba(139,92,246,.3);color:#c4b5fd;font-size:.76rem;font-weight:600;cursor:pointer;';chip.textContent=def.icon+' '+def.label;chip.onclick=function(){restoreW(id);};document.getElementById('trayChips').appendChild(chip);}
+function restoreW(id){delete removedW[id];var def=window._DD.find(function(d){return d.id===id;});if(def)mkWidget(def);var c=document.getElementById('chip'+id);if(c)c.remove();if(!document.getElementById('trayChips').children.length)document.getElementById('demoTray').style.display='none';}
+function demoReset(){Object.values(dWidgets).forEach(function(el){el.remove();});Object.keys(dWidgets).forEach(function(k){delete dWidgets[k];});Object.keys(removedW).forEach(function(k){delete removedW[k];});document.getElementById('trayChips').innerHTML='';document.getElementById('demoTray').style.display='none';if(editMode)demoToggleEdit();window._DD.forEach(function(d){mkWidget(d);});}
+function resizeArena(){arena.style.minHeight=(arena.offsetWidth<480?'500':'400')+'px';}resizeArena();
+window.addEventListener('resize',function(){resizeArena();Object.values(dWidgets).forEach(function(el){el.remove();});Object.keys(dWidgets).forEach(function(k){delete dWidgets[k];});window._DD.forEach(function(d){mkWidget(d);});});
+function demoTick(){var el=document.getElementById('dwClockTime');if(!el)return;var n=new Date();el.textContent=n.toLocaleTimeString('ja-JP',{hour:'2-digit',minute:'2-digit',hour12:false});}demoTick();setInterval(demoTick,15000);
+window.demoTheme=demoTheme;window.demoToggleEdit=demoToggleEdit;window.demoReset=demoReset;
+window._DD.forEach(function(d){mkWidget(d);});
+})();
+</script>
 
 <!-- === Google連携 === -->
 <section id="google">
