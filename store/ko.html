@@ -3,122 +3,182 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>GridWidget — 새 탭을 나만의 대시보드로</title>
-  <meta name="description" content="시계, 캘린더, 할 일, 메모, 날씨, 시세 등 19종 위젯을 자유롭게 배치하는 크롬 새 탭 대시보드 확장프로그램." />
+  <title>GridWidget — 크롬 새 탭을 19종 위젯 대시보드로</title>
+  <meta name="description" content="크롬 새 탭을 나만의 대시보드로. 시계, 캘린더, 할 일, 날씨, 주식, 메모, 습관, 집중 타이머 등 19종 위젯 전부 무료." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --bg: #1e1e32; --surface: #27274a; --surface2: #30305a;
-      --border: #3d3d68; --border2: rgba(139,92,246,.45);
-      --text: #ffffff; --muted: #9898c0;
+      --bg: #16162a; --surface: #1f1f3a; --surface2: #28285a;
+      --border: #38387a; --border2: rgba(139,92,246,.5);
+      --text: #f0f0ff; --sub: #c8c8e8; --muted: #8888b8;
       --accent: #8b5cf6; --accent2: #6366f1; --accent-hover: #7c3aed;
-      --green: #34d399; --radius: 16px; --max: 960px;
+      --green: #34d399; --yellow: #fbbf24; --radius: 16px; --max: 980px;
     }
-    body { background:var(--bg); color:var(--text); font-family:'Inter',-apple-system,sans-serif; line-height:1.6; -webkit-font-smoothing:antialiased; overflow-x:hidden; }
+    html { scroll-behavior: smooth; }
+    body { background:var(--bg); color:var(--text); font-family:'Inter',-apple-system,sans-serif; line-height:1.7; -webkit-font-smoothing:antialiased; overflow-x:hidden; font-size:16px; }
     a { color:inherit; text-decoration:none; }
-    nav { position:sticky; top:0; z-index:100; display:flex; align-items:center; justify-content:space-between; gap:16px; padding:0 32px; height:64px; background:rgba(30,30,50,.88); backdrop-filter:blur(20px) saturate(180%); border-bottom:1px solid var(--border); }
+    img { max-width:100%; }
+
+    nav { position:sticky; top:0; z-index:100; display:flex; align-items:center; justify-content:space-between; gap:16px; padding:0 32px; height:64px; background:rgba(22,22,42,.92); backdrop-filter:blur(24px) saturate(180%); border-bottom:1px solid rgba(139,92,246,.2); }
     .nav-brand { font-weight:800; font-size:1.05rem; white-space:nowrap; background:linear-gradient(135deg,#c4b5fd,#818cf8); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
     .nav-links { display:flex; gap:24px; font-size:.88rem; color:var(--muted); }
-    .nav-links a { transition:color .2s; } .nav-links a:hover { color:var(--text); }
+    .nav-links a { transition:color .18s; } .nav-links a:hover { color:var(--text); }
     .nav-lang { display:flex; gap:6px; }
-    .lang-btn { padding:4px 10px; border-radius:8px; font-size:.75rem; font-weight:600; border:1px solid var(--border); color:var(--muted); cursor:pointer; background:transparent; transition:all .2s; }
-    .lang-btn.active, .lang-btn:hover { background:var(--accent); color:#fff; border-color:var(--accent); }
-    .nav-cta { padding:8px 18px; border-radius:10px; background:var(--accent); color:#fff; font-size:.85rem; font-weight:600; white-space:nowrap; box-shadow:0 0 20px rgba(139,92,246,.4); transition:background .2s,box-shadow .2s,transform .15s; }
-    .nav-cta:hover { background:var(--accent-hover); box-shadow:0 0 32px rgba(139,92,246,.6); transform:translateY(-1px); }
-    section { position:relative; padding:96px 24px; }
-    .inner { max-width:var(--max); margin:0 auto; }
-    .eyebrow { display:inline-block; font-size:.75rem; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:#c4b5fd; background:rgba(139,92,246,.15); border:1px solid rgba(139,92,246,.3); padding:4px 14px; border-radius:20px; margin-bottom:20px; }
-    h1 { font-size:clamp(2.4rem,6vw,3.8rem); font-weight:900; line-height:1.1; margin-bottom:20px; background:linear-gradient(135deg,#fff 30%,#c4b5fd 70%,#818cf8 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
-    h2 { font-size:clamp(1.8rem,4vw,2.6rem); font-weight:800; line-height:1.15; margin-bottom:10px; }
-    .sub { color:var(--muted); font-size:1.05rem; max-width:580px; margin-bottom:40px; line-height:1.7; }
-    #hero { text-align:center; padding-top:108px; background:radial-gradient(ellipse 90% 70% at 50% -5%,rgba(139,92,246,.35) 0%,transparent 65%),radial-gradient(ellipse 55% 45% at 85% 85%,rgba(99,102,241,.22) 0%,transparent 55%); }
-    #hero .sub { margin:0 auto 40px; }
-    .cta-row { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; margin-bottom:64px; }
-    .btn-primary { padding:14px 30px; border-radius:12px; background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff; font-weight:700; font-size:.95rem; box-shadow:0 4px 24px rgba(139,92,246,.45); transition:transform .15s,box-shadow .2s; }
-    .btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 32px rgba(139,92,246,.6); }
-    .btn-ghost { padding:14px 30px; border-radius:12px; border:1px solid var(--border2); color:var(--muted); font-size:.95rem; transition:color .2s,border-color .2s,transform .15s; }
-    .btn-ghost:hover { color:var(--text); border-color:rgba(139,92,246,.6); transform:translateY(-2px); }
-    .hero-img-wrap { position:relative; display:inline-block; filter:drop-shadow(0 24px 80px rgba(139,92,246,.4)); animation:float 6s ease-in-out infinite; }
-    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
-    .hero-img { width:100%; max-width:860px; border-radius:20px; border:1px solid rgba(255,255,255,.1); }
-    .hero-img-wrap::after { content:''; position:absolute; bottom:-30px; left:10%; right:10%; height:60px; background:radial-gradient(ellipse at center,rgba(139,92,246,.5) 0%,transparent 70%); filter:blur(20px); z-index:-1; }
-    .proof-strip { display:flex; align-items:center; justify-content:center; gap:24px; flex-wrap:wrap; padding:24px; border-top:1px solid var(--border); border-bottom:1px solid var(--border); background:var(--surface); }
-    .proof-item { display:flex; align-items:center; gap:8px; font-size:.85rem; color:var(--muted); }
-    .proof-stars { color:#fbbf24; letter-spacing:2px; }
-    .proof-dot { width:4px; height:4px; background:var(--border); border-radius:50%; }
-    #features { background:var(--surface); }
-    .features-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:20px; margin-top:56px; }
-    .feat-card { position:relative; background:rgba(39,39,74,.8); border:1px solid var(--border); border-radius:var(--radius); padding:28px 24px; backdrop-filter:blur(12px); transition:transform .25s,border-color .25s,box-shadow .25s; overflow:hidden; }
+    .lang-btn { padding:4px 10px; border-radius:8px; font-size:.74rem; font-weight:600; border:1px solid var(--border); color:var(--muted); cursor:pointer; background:transparent; transition:all .18s; }
+    .lang-btn.active,.lang-btn:hover { background:var(--accent); color:#fff; border-color:var(--accent); }
+    .nav-actions { display:flex; gap:8px; align-items:center; }
+    .nav-install { padding:8px 16px; border-radius:10px; background:var(--accent); color:#fff; font-size:.82rem; font-weight:700; white-space:nowrap; box-shadow:0 0 18px rgba(139,92,246,.4); transition:background .18s,box-shadow .18s,transform .12s; }
+    .nav-install:hover { background:var(--accent-hover); box-shadow:0 0 28px rgba(139,92,246,.6); transform:translateY(-1px); }
+    .nav-pro { padding:8px 14px; border-radius:10px; border:1px solid var(--border2); color:var(--sub); font-size:.82rem; font-weight:600; white-space:nowrap; transition:color .18s,border-color .18s; }
+    .nav-pro:hover { color:var(--text); border-color:rgba(139,92,246,.7); }
+
+    #hero { text-align:center; padding:120px 24px 96px; background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(139,92,246,.3) 0%,transparent 65%),radial-gradient(ellipse 50% 40% at 90% 90%,rgba(99,102,241,.18) 0%,transparent 55%); }
+    .eyebrow { display:inline-flex; align-items:center; gap:8px; font-size:.74rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#c4b5fd; background:rgba(139,92,246,.15); border:1px solid rgba(139,92,246,.35); padding:5px 16px; border-radius:20px; margin-bottom:24px; }
+    h1 { font-size:clamp(2.4rem,7vw,4rem); font-weight:900; line-height:1.1; margin-bottom:20px; letter-spacing:-.02em; background:linear-gradient(140deg,#fff 25%,#d4c5ff 55%,#818cf8 90%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .hero-sub { color:var(--sub); font-size:1.1rem; max-width:560px; margin:0 auto 12px; line-height:1.75; }
+    .hero-note { font-size:.83rem; color:var(--muted); margin-bottom:40px; }
+    .hero-note span { color:var(--green); font-weight:600; }
+
+    .cta-row { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; margin-bottom:28px; }
+    .btn-install { display:inline-flex; align-items:center; gap:10px; padding:16px 32px; border-radius:14px; background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff; font-weight:800; font-size:1rem; box-shadow:0 6px 30px rgba(139,92,246,.5); transition:transform .15s,box-shadow .2s; }
+    .btn-install:hover { transform:translateY(-3px); box-shadow:0 12px 40px rgba(139,92,246,.7); }
+    .btn-pricing { display:inline-flex; align-items:center; gap:8px; padding:16px 28px; border-radius:14px; border:1.5px solid var(--border2); color:var(--sub); font-size:.95rem; font-weight:600; transition:color .18s,border-color .18s,background .18s,transform .15s; }
+    .btn-pricing:hover { color:var(--text); border-color:rgba(139,92,246,.7); background:rgba(139,92,246,.08); transform:translateY(-2px); }
+
+    .hero-proof { display:flex; align-items:center; justify-content:center; gap:20px; flex-wrap:wrap; margin-bottom:56px; }
+    .hproof-item { display:flex; align-items:center; gap:7px; font-size:.82rem; color:var(--muted); }
+    .hproof-stars { color:var(--yellow); font-size:.9rem; letter-spacing:1px; }
+    .hproof-dot { width:3px; height:3px; background:var(--border); border-radius:50%; }
+
+    .hero-img-wrap { position:relative; display:inline-block; max-width:900px; width:100%; }
+    .hero-img-wrap::before { content:''; position:absolute; inset:-2px; border-radius:22px; background:linear-gradient(135deg,rgba(139,92,246,.5),rgba(99,102,241,.3),rgba(139,92,246,.1)); z-index:-1; }
+    .hero-img { width:100%; border-radius:20px; border:1px solid rgba(255,255,255,.12); display:block; box-shadow:0 40px 100px rgba(0,0,0,.5); }
+    .hero-img-wrap::after { content:''; position:absolute; bottom:-40px; left:10%; right:10%; height:80px; background:radial-gradient(ellipse at center,rgba(139,92,246,.4) 0%,transparent 70%); filter:blur(24px); z-index:-1; }
+
+    .proof-strip { display:flex; align-items:center; justify-content:center; gap:32px; flex-wrap:wrap; padding:20px 24px; background:var(--surface); border-top:1px solid rgba(139,92,246,.2); border-bottom:1px solid rgba(139,92,246,.2); }
+    .ps-item { display:flex; align-items:center; gap:8px; font-size:.84rem; color:var(--sub); font-weight:500; }
+    .ps-dot { width:4px; height:4px; background:var(--border); border-radius:50%; }
+
+    #showcase { padding:80px 0; overflow:hidden; }
+    .section-header { text-align:center; margin-bottom:48px; padding:0 24px; }
+    h2 { font-size:clamp(1.9rem,4.5vw,2.8rem); font-weight:800; line-height:1.15; color:var(--text); margin-bottom:12px; }
+    .section-sub { color:var(--sub); font-size:1rem; max-width:520px; margin:0 auto; line-height:1.7; }
+    .eyebrow-small { display:inline-block; font-size:.72rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:#c4b5fd; background:rgba(139,92,246,.15); border:1px solid rgba(139,92,246,.3); padding:4px 14px; border-radius:20px; margin-bottom:16px; }
+
+    .marquee-track { overflow:hidden; -webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent); mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent); }
+    .marquee-inner { display:flex; gap:14px; width:max-content; }
+    .ml{animation:ml 40s linear infinite} .mr{animation:mr 36s linear infinite}
+    .marquee-inner:hover{animation-play-state:paused}
+    @keyframes ml{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+    @keyframes mr{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+    .wcard { min-width:160px; flex-shrink:0; background:rgba(31,31,58,.9); border:1px solid var(--border); border-radius:16px; padding:16px; cursor:default; transition:border-color .2s,transform .22s,box-shadow .22s; }
+    .wcard:hover { border-color:var(--border2); transform:translateY(-5px) scale(1.02); box-shadow:0 14px 36px rgba(139,92,246,.28); }
+    .wcard-label { font-size:.7rem; font-weight:700; color:var(--muted); letter-spacing:.07em; text-transform:uppercase; margin-bottom:10px; }
+
+    #features { background:var(--surface); padding:96px 24px; }
+    .features-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(290px,1fr)); gap:20px; margin-top:56px; }
+    .feat-card { position:relative; background:rgba(22,22,42,.8); border:1px solid var(--border); border-radius:var(--radius); padding:30px 26px; transition:transform .22s,border-color .22s,box-shadow .22s; overflow:hidden; }
     .feat-card::before { content:''; position:absolute; top:0; left:0; width:3px; height:100%; border-radius:3px 0 0 3px; }
     .feat-card:nth-child(1)::before{background:linear-gradient(180deg,#c4b5fd,#8b5cf6)} .feat-card:nth-child(2)::before{background:linear-gradient(180deg,#93c5fd,#3b82f6)} .feat-card:nth-child(3)::before{background:linear-gradient(180deg,#6ee7b7,#10b981)} .feat-card:nth-child(4)::before{background:linear-gradient(180deg,#fde68a,#f59e0b)} .feat-card:nth-child(5)::before{background:linear-gradient(180deg,#f9a8d4,#ec4899)} .feat-card:nth-child(6)::before{background:linear-gradient(180deg,#fdba74,#f97316)}
-    .feat-card:hover { transform:translateY(-4px); border-color:var(--border2); box-shadow:0 12px 40px rgba(139,92,246,.2); }
-    .feat-icon { font-size:2rem; margin-bottom:14px; }
-    .feat-card h3 { font-size:1rem; font-weight:700; margin-bottom:8px; }
-    .feat-card p { font-size:.86rem; color:var(--muted); line-height:1.6; }
-    .marquee-track { overflow:hidden; -webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent); mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent); }
-    .marquee-inner { display:flex; gap:16px; width:max-content; }
-    .marquee-left { animation:marquee-l 40s linear infinite; } .marquee-right { animation:marquee-r 36s linear infinite; }
-    .marquee-inner:hover { animation-play-state:paused; }
-    @keyframes marquee-l { from{transform:translateX(0)} to{transform:translateX(-50%)} }
-    @keyframes marquee-r { from{transform:translateX(-50%)} to{transform:translateX(0)} }
-    .wcard { min-width:160px; background:rgba(39,39,74,.85); border:1px solid var(--border); border-radius:16px; padding:16px; backdrop-filter:blur(12px); flex-shrink:0; transition:border-color .25s,transform .25s,box-shadow .25s; cursor:default; }
-    .wcard:hover { border-color:var(--border2); transform:translateY(-4px) scale(1.02); box-shadow:0 12px 32px rgba(139,92,246,.25); }
-    .wcard-label { font-size:.72rem; font-weight:600; color:var(--muted); letter-spacing:.06em; text-transform:uppercase; margin-bottom:10px; }
-    #pricing { background:radial-gradient(ellipse 70% 55% at 50% 100%,rgba(99,102,241,.18) 0%,transparent 70%),var(--bg); }
-    #pricing h2 { text-align:center; }
-    .pricing-sub { text-align:center; color:var(--muted); margin-bottom:56px; font-size:1rem; }
-    .pricing-grid { display:flex; gap:24px; justify-content:center; flex-wrap:wrap; }
-    .plan { flex:1; min-width:280px; max-width:380px; background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:36px 30px; position:relative; transition:transform .25s; }
+    .feat-card:hover { transform:translateY(-5px); border-color:var(--border2); box-shadow:0 14px 44px rgba(139,92,246,.22); }
+    .feat-icon { font-size:2.2rem; margin-bottom:16px; }
+    .feat-card h3 { font-size:1.05rem; font-weight:700; margin-bottom:10px; color:var(--text); }
+    .feat-card p { font-size:.88rem; color:var(--sub); line-height:1.7; }
+
+    #testimonials { padding:96px 24px; background:var(--bg); }
+    .testimonials-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:20px; margin-top:56px; }
+    .tcard { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:28px 24px; transition:border-color .2s,transform .22s; }
+    .tcard:hover { border-color:var(--border2); transform:translateY(-3px); }
+    .tcard-quote { font-size:2.8rem; color:var(--accent); line-height:1; margin-bottom:10px; opacity:.45; }
+    .tcard p { font-size:.9rem; color:var(--sub); line-height:1.75; margin-bottom:20px; font-style:italic; }
+    .tcard-author { display:flex; align-items:center; gap:12px; }
+    .tcard-avatar { width:38px; height:38px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1rem; font-weight:800; flex-shrink:0; color:#fff; }
+    .tcard-name { font-size:.88rem; font-weight:700; color:var(--text); }
+    .tcard-role { font-size:.78rem; color:var(--muted); }
+
+    #pricing { padding:96px 24px; background:radial-gradient(ellipse 70% 55% at 50% 100%,rgba(99,102,241,.18) 0%,transparent 70%),var(--bg); }
+    #pricing h2,.pricing-sub { text-align:center; }
+    .pricing-sub { color:var(--sub); margin-bottom:56px; font-size:1rem; }
+    .pricing-grid { display:flex; gap:24px; justify-content:center; flex-wrap:wrap; max-width:820px; margin:0 auto; }
+    .plan { flex:1; min-width:280px; max-width:380px; background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:36px 30px; position:relative; transition:transform .22s; }
     .plan:hover { transform:translateY(-4px); }
-    .plan.featured { border-color:var(--accent); box-shadow:0 0 0 1px rgba(139,92,246,.35),0 24px 60px rgba(139,92,246,.25); background:linear-gradient(160deg,var(--surface),#221b45); }
-    .plan-badge { position:absolute; top:-14px; left:50%; transform:translateX(-50%); background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff; font-size:.75rem; font-weight:700; letter-spacing:.06em; padding:4px 18px; border-radius:20px; white-space:nowrap; box-shadow:0 4px 12px rgba(139,92,246,.45); }
-    .plan-tier { font-size:.75rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin-bottom:10px; }
-    .plan-price { font-size:3rem; font-weight:900; margin-bottom:4px; letter-spacing:-.02em; }
+    .plan.featured { border-color:var(--accent); box-shadow:0 0 0 1px rgba(139,92,246,.3),0 24px 64px rgba(139,92,246,.22); background:linear-gradient(160deg,var(--surface),#1a1240); }
+    .plan-badge { position:absolute; top:-14px; left:50%; transform:translateX(-50%); background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff; font-size:.73rem; font-weight:700; letter-spacing:.07em; padding:4px 18px; border-radius:20px; white-space:nowrap; box-shadow:0 4px 14px rgba(139,92,246,.45); }
+    .plan-tier { font-size:.73rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-bottom:10px; }
+    .plan-price { font-size:3.2rem; font-weight:900; margin-bottom:4px; letter-spacing:-.025em; }
     .plan-price span { font-size:1rem; color:var(--muted); font-weight:400; }
     .plan-cadence { font-size:.85rem; color:var(--muted); margin-bottom:28px; }
-    .plan-features { list-style:none; margin-bottom:32px; font-size:.9rem; line-height:2; }
-    .plan-features li { display:flex; align-items:baseline; gap:8px; }
-    .plan-features li::before { content:"✓"; color:var(--green); font-weight:700; flex-shrink:0; }
-    .plan-btn { display:block; width:100%; text-align:center; padding:13px 0; border-radius:12px; font-size:.95rem; font-weight:700; border:none; cursor:pointer; }
-    .plan-btn.free { border:1px solid var(--border2); color:var(--muted); background:transparent; }
-    .plan-btn.free:hover { color:var(--text); border-color:rgba(139,92,246,.6); }
+    .plan-features { list-style:none; margin-bottom:32px; font-size:.9rem; }
+    .plan-features li { display:flex; align-items:baseline; gap:9px; padding:5px 0; border-bottom:1px solid rgba(255,255,255,.04); }
+    .plan-features li:last-child { border-bottom:none; }
+    .plan-features li::before { content:"✓"; color:var(--green); font-weight:800; flex-shrink:0; font-size:.85rem; }
+    .plan-btn { display:block; width:100%; text-align:center; padding:14px 0; border-radius:12px; font-size:.95rem; font-weight:700; border:none; cursor:pointer; transition:all .18s; }
+    .plan-btn.free { border:1.5px solid var(--border2); color:var(--sub); background:transparent; }
+    .plan-btn.free:hover { color:var(--text); border-color:rgba(139,92,246,.7); background:rgba(139,92,246,.07); }
     .plan-options { display:flex; flex-direction:column; gap:10px; }
-    .plan-option { display:flex; align-items:center; justify-content:space-between; background:rgba(255,255,255,.04); border:1px solid var(--border); border-radius:12px; padding:14px 16px; transition:border-color .2s; position:relative; }
+    .plan-option { display:flex; align-items:center; justify-content:space-between; background:rgba(255,255,255,.03); border:1px solid var(--border); border-radius:12px; padding:14px 16px; transition:border-color .18s; position:relative; }
     .plan-option:hover { border-color:var(--border2); }
-    .plan-option.best { background:rgba(139,92,246,.1); border-color:rgba(139,92,246,.4); }
-    .option-best-badge { position:absolute; top:-9px; left:14px; background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff; font-size:.65rem; font-weight:700; padding:2px 10px; border-radius:10px; }
-    .option-label { font-size:.8rem; color:var(--muted); margin-bottom:2px; }
-    .option-price { font-weight:800; font-size:1.1rem; }
-    .option-price small { font-size:.78rem; color:var(--muted); font-weight:400; }
-    .option-savings { font-size:.7rem; color:#c4b5fd; margin-top:1px; }
-    .option-btn { padding:8px 16px; border-radius:9px; background:var(--accent); color:#fff; font-size:.82rem; font-weight:700; white-space:nowrap; flex-shrink:0; transition:background .2s,transform .15s; }
+    .plan-option.best { background:rgba(139,92,246,.09); border-color:rgba(139,92,246,.45); }
+    .option-best-badge { position:absolute; top:-9px; left:14px; background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff; font-size:.63rem; font-weight:700; padding:2px 10px; border-radius:10px; }
+    .option-label { font-size:.78rem; color:var(--muted); margin-bottom:2px; }
+    .option-price { font-weight:800; font-size:1.1rem; color:var(--text); }
+    .option-price small { font-size:.76rem; color:var(--muted); font-weight:400; }
+    .option-savings { font-size:.69rem; color:#c4b5fd; margin-top:2px; }
+    .option-btn { padding:8px 16px; border-radius:9px; background:var(--accent); color:#fff; font-size:.8rem; font-weight:700; white-space:nowrap; flex-shrink:0; transition:background .18s,transform .12s; }
     .option-btn:hover { background:var(--accent-hover); transform:translateY(-1px); }
-    .pricing-note { text-align:center; margin-top:36px; font-size:.85rem; color:var(--muted); opacity:.5; }
-    #privacy { background:var(--surface); }
+    .pricing-note { text-align:center; margin-top:32px; font-size:.83rem; color:var(--muted); opacity:.6; }
+
+    #faq { background:var(--surface); padding:96px 24px; }
+    .faq-list { max-width:680px; margin:48px auto 0; display:flex; flex-direction:column; gap:12px; }
+    .faq-item { background:rgba(22,22,42,.8); border:1px solid var(--border); border-radius:14px; overflow:hidden; transition:border-color .18s; }
+    .faq-item:hover { border-color:var(--border2); }
+    .faq-q { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:20px 24px; cursor:pointer; font-size:.95rem; font-weight:600; color:var(--text); user-select:none; }
+    .faq-q svg { width:18px; height:18px; flex-shrink:0; color:var(--muted); transition:transform .25s; }
+    .faq-item.open .faq-q svg { transform:rotate(180deg); }
+    .faq-a { max-height:0; overflow:hidden; transition:max-height .3s ease; }
+    .faq-item.open .faq-a { max-height:300px; }
+    .faq-a p { padding:0 24px 20px; font-size:.9rem; color:var(--sub); line-height:1.75; }
+
+    #final-cta { padding:100px 24px; text-align:center; background:radial-gradient(ellipse 75% 65% at 50% 50%,rgba(139,92,246,.22) 0%,transparent 70%),var(--bg); }
+    #final-cta h2 { font-size:clamp(2rem,5vw,3rem); margin-bottom:16px; }
+    .final-cta-row { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
+
+    #privacy { background:var(--surface); padding:96px 24px; }
     .privacy-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:16px; margin-top:48px; }
-    .perm-card { background:rgba(39,39,74,.8); border:1px solid var(--border); border-radius:var(--radius); padding:24px 20px; transition:border-color .2s; }
+    .perm-card { background:rgba(22,22,42,.8); border:1px solid var(--border); border-radius:var(--radius); padding:24px 20px; transition:border-color .18s; }
     .perm-card:hover { border-color:var(--border2); }
-    .perm-card h4 { font-size:.95rem; font-weight:700; margin-bottom:10px; }
-    .perm-card p { font-size:.83rem; color:var(--muted); line-height:1.6; }
-    footer { position:relative; border-top:1px solid var(--border); padding:40px 24px; text-align:center; font-size:.85rem; color:var(--muted); }
-    footer::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,rgba(139,92,246,.5),transparent); }
-    footer a { color:var(--muted); } footer a:hover { color:var(--text); }
-    footer p + p { margin-top:6px; }
-    .reveal { opacity:0; transform:translateY(28px); transition:opacity .6s ease,transform .6s ease; }
+    .perm-card h4 { font-size:.95rem; font-weight:700; margin-bottom:10px; color:var(--text); }
+    .perm-card p { font-size:.84rem; color:var(--sub); line-height:1.7; }
+
+    footer { position:relative; border-top:1px solid var(--border); padding:40px 24px; text-align:center; font-size:.84rem; color:var(--muted); }
+    footer::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,rgba(139,92,246,.6),transparent); }
+    footer a { color:var(--muted); transition:color .18s; } footer a:hover { color:var(--text); }
+    footer p+p { margin-top:6px; }
+
+    .inner { max-width:var(--max); margin:0 auto; }
+    .reveal { opacity:0; transform:translateY(26px); transition:opacity .6s ease,transform .6s ease; }
     .reveal.visible { opacity:1; transform:translateY(0); }
-    .reveal-delay-1{transition-delay:.1s} .reveal-delay-2{transition-delay:.2s} .reveal-delay-3{transition-delay:.3s} .reveal-delay-4{transition-delay:.4s} .reveal-delay-5{transition-delay:.5s} .reveal-delay-6{transition-delay:.6s}
-    @media(max-width:640px){nav{padding:0 16px} .nav-links{display:none} section{padding:72px 16px} #hero{padding-top:80px} .hero-img-wrap{animation:none}}
+    .d1{transition-delay:.08s} .d2{transition-delay:.16s} .d3{transition-delay:.24s} .d4{transition-delay:.32s} .d5{transition-delay:.4s} .d6{transition-delay:.48s}
+
+    @media(max-width:640px){
+      nav{padding:0 16px} .nav-links{display:none} .nav-lang{display:none}
+      #hero{padding:80px 16px 64px}
+      .btn-install,.btn-pricing{width:100%;justify-content:center;}
+      h1{font-size:2.2rem}
+    }
   </style>
 </head>
 <body>
+
 <nav>
   <div class="nav-brand">GridWidget</div>
   <div class="nav-links">
     <a href="#features">기능</a>
     <a href="#pricing">가격</a>
+    <a href="#faq">FAQ</a>
     <a href="#privacy">개인정보</a>
     <a href="privacy-policy.html">정책</a>
   </div>
@@ -127,17 +187,32 @@
     <button class="lang-btn active" onclick="switchLang('ko')">한국어</button>
     <button class="lang-btn" onclick="switchLang('ja')">日本語</button>
   </div>
-  <a class="nav-cta" href="https://chromewebstore.google.com/detail/jppmdhafklhcaipkjlgmoonnngpeeege">무료 설치</a>
+  <div class="nav-actions">
+    <a class="nav-pro" href="#pricing">Pro 플랜 보기</a>
+    <a class="nav-install" href="https://chromewebstore.google.com/detail/jppmdhafklhcaipkjlgmoonnngpeeege">무료 설치</a>
+  </div>
 </nav>
 
 <section id="hero">
   <div class="inner">
     <div class="eyebrow">크롬 새 탭 확장 · iOS 스타일 위젯 대시보드</div>
-    <h1>새 탭이,<br>매일 쓰는 나만의<br>대시보드가 됩니다.</h1>
-    <p class="sub">시계, 캘린더, 할 일, 메모, 날씨, 시세 — 19종 위젯을 자유롭게 배치하는 깔끔한 개인 대시보드. 전부 무료.</p>
+    <h1>하루를 내 손안에.<br>19종 위젯, 전부 무료.</h1>
+    <p class="hero-sub">새 탭을 열 때마다 나만의 지휘 센터로 — 시계, 캘린더, 할 일, 날씨, 주식, 메모 모두 한 화면에.</p>
+    <p class="hero-note"><span>19종 위젯 영원히 무료.</span> Notion 동기화가 필요하면 Pro로 업그레이드.</p>
     <div class="cta-row">
-      <a class="btn-primary" href="https://chromewebstore.google.com/detail/jppmdhafklhcaipkjlgmoonnngpeeege">Chrome 웹스토어에서 설치</a>
-      <a class="btn-ghost" href="#features">기능 둘러보기 ↓</a>
+      <a class="btn-install" href="https://chromewebstore.google.com/detail/jppmdhafklhcaipkjlgmoonnngpeeege">
+        ✓&nbsp; Chrome에 무료 설치
+      </a>
+      <a class="btn-pricing" href="#pricing">Pro 플랜 둘러보기 ↓</a>
+    </div>
+    <div class="hero-proof">
+      <div class="hproof-item"><span class="hproof-stars">★★★★★</span><span>Chrome 웹스토어</span></div>
+      <div class="hproof-dot"></div>
+      <div class="hproof-item">🔒 계정 불필요</div>
+      <div class="hproof-dot"></div>
+      <div class="hproof-item">⚡ 오프라인 작동</div>
+      <div class="hproof-dot"></div>
+      <div class="hproof-item">🚫 광고 없음 · 추적 없음</div>
     </div>
     <div class="hero-img-wrap">
       <img class="hero-img" src="screenshot-1-dashboard.png" alt="GridWidget 대시보드" />
@@ -146,102 +221,147 @@
 </section>
 
 <div class="proof-strip">
-  <div class="proof-item"><span class="proof-stars">★★★★★</span><span>Chrome 웹스토어</span></div>
-  <div class="proof-dot"></div>
-  <div class="proof-item">🔒 계정 불필요</div>
-  <div class="proof-dot"></div>
-  <div class="proof-item">⚡ 오프라인 작동</div>
-  <div class="proof-dot"></div>
-  <div class="proof-item">🎨 19종 위젯 무료</div>
+  <div class="ps-item">🎨 19종 위젯 — 영원히 무료</div>
+  <div class="ps-dot"></div>
+  <div class="ps-item">🔐 데이터는 브라우저에만 저장</div>
+  <div class="ps-dot"></div>
+  <div class="ps-item">🔄 구글 캘린더 · 할 일 동기화</div>
+  <div class="ps-dot"></div>
+  <div class="ps-item">🖱️ 드래그 · 리사이즈 · 잠금</div>
 </div>
 
-<section id="showcase" style="padding:80px 0;overflow:hidden;">
-  <div class="inner" style="text-align:center;margin-bottom:48px;padding:0 24px;">
-    <div class="eyebrow">19종 위젯</div>
+<section id="showcase">
+  <div class="section-header">
+    <div class="eyebrow-small">19종 위젯</div>
     <h2 class="reveal">위젯 한눈에 둘러보기</h2>
-    <p class="sub reveal reveal-delay-1" style="margin:0 auto;">드래그로 배치하고, 리사이즈하고, 마음껏 꾸미세요.</p>
+    <p class="section-sub reveal d1">드래그로 배치하고, 모서리 끌어 리사이즈하고, 길게 눌러 편집. 전부 로컬에서 빠르게.</p>
   </div>
   <div class="marquee-track">
-    <div class="marquee-inner marquee-left">
-      <div class="wcard"><div class="wcard-label">🕐 시계</div><div style="font-size:2.2rem;font-weight:800;">09:41</div><div style="font-size:.75rem;color:var(--muted);margin-top:4px;">화요일 6월 23일</div></div>
-      <div class="wcard"><div class="wcard-label">☀️ 날씨</div><div style="font-size:2.6rem;font-weight:800;">24°</div><div style="font-size:.8rem;color:var(--muted);">서울 · 맑음</div></div>
-      <div class="wcard" style="min-width:200px;"><div class="wcard-label">📅 캘린더</div><div style="display:flex;flex-direction:column;gap:5px;margin-top:4px;"><div style="background:rgba(139,92,246,.18);border-left:2px solid var(--accent);padding:4px 8px;border-radius:4px;font-size:.76rem;">10:00 팀 스탠드업</div><div style="background:rgba(99,102,241,.18);border-left:2px solid #6366f1;padding:4px 8px;border-radius:4px;font-size:.76rem;">14:30 디자인 리뷰</div><div style="background:rgba(52,211,153,.12);border-left:2px solid #34d399;padding:4px 8px;border-radius:4px;font-size:.76rem;">18:00 헬스장 🏋️</div></div></div>
-      <div class="wcard"><div class="wcard-label">✅ 할 일</div><div style="display:flex;flex-direction:column;gap:7px;margin-top:4px;"><div style="display:flex;align-items:center;gap:8px;font-size:.82rem;"><div style="width:14px;height:14px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:.6rem;flex-shrink:0;">✓</div><span style="text-decoration:line-through;color:var(--muted);">PR #42 리뷰</span></div><div style="display:flex;align-items:center;gap:8px;font-size:.82rem;"><div style="width:14px;height:14px;border-radius:50%;border:1.5px solid var(--muted);flex-shrink:0;"></div><span>프로덕션 배포</span></div></div></div>
-      <div class="wcard" style="min-width:180px;"><div class="wcard-label">📝 메모</div><div style="font-size:.78rem;color:var(--muted);line-height:1.7;margin-top:4px;">아이디어 메모<br>— 다크모드 개선<br>— 새 위젯 추가<br>— PR 리뷰 요청</div></div>
-      <div class="wcard"><div class="wcard-label">🎯 집중 타이머</div><div style="position:relative;width:80px;height:80px;margin:8px auto;"><svg width="80" height="80" style="transform:rotate(-90deg)"><circle cx="40" cy="40" r="34" fill="none" stroke="var(--border)" stroke-width="5"/><circle cx="40" cy="40" r="34" fill="none" stroke="var(--accent)" stroke-width="5" stroke-dasharray="213" stroke-dashoffset="60" stroke-linecap="round"/></svg><div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;"><div style="font-size:1.3rem;font-weight:800;">18:32</div><div style="font-size:.6rem;color:var(--muted);">집중</div></div></div></div>
-      <div class="wcard"><div class="wcard-label">📈 주식</div><div style="display:flex;flex-direction:column;gap:6px;margin-top:4px;"><div style="display:flex;justify-content:space-between;font-size:.82rem;"><span style="font-weight:700;">AAPL</span><span style="color:#34d399;">$189.30 +1.2%</span></div><div style="display:flex;justify-content:space-between;font-size:.82rem;"><span style="font-weight:700;">NVDA</span><span style="color:#34d399;">$875.40 +3.4%</span></div><div style="display:flex;justify-content:space-between;font-size:.82rem;"><span style="font-weight:700;">TSLA</span><span style="color:#f87171;">$172.10 -0.8%</span></div></div></div>
-      <div class="wcard" style="min-width:200px;"><div class="wcard-label">💬 명언</div><div style="font-size:.85rem;line-height:1.6;font-style:italic;color:#c4b5fd;margin-top:4px;">"미래를 예측하는 가장 좋은 방법은 직접 만드는 것이다."</div><div style="font-size:.72rem;color:var(--muted);margin-top:8px;">— Alan Kay</div></div>
+    <div class="marquee-inner ml">
+      <div class="wcard"><div class="wcard-label">🕐 시계</div><div style="font-size:2.2rem;font-weight:800;letter-spacing:-.02em;">09:41</div><div style="font-size:.74rem;color:var(--muted);margin-top:4px;">화요일 6월 23일</div></div>
+      <div class="wcard"><div class="wcard-label">☀️ 날씨</div><div style="font-size:2.6rem;font-weight:800;">24°</div><div style="font-size:.8rem;color:var(--sub);">서울 · 맑음</div></div>
+      <div class="wcard" style="min-width:210px;"><div class="wcard-label">📅 캘린더</div><div style="display:flex;flex-direction:column;gap:5px;margin-top:6px;"><div style="background:rgba(139,92,246,.18);border-left:2px solid var(--accent);padding:5px 9px;border-radius:5px;font-size:.76rem;color:var(--sub);">10:00 팀 스탠드업</div><div style="background:rgba(99,102,241,.16);border-left:2px solid #6366f1;padding:5px 9px;border-radius:5px;font-size:.76rem;color:var(--sub);">14:30 디자인 리뷰</div><div style="background:rgba(52,211,153,.1);border-left:2px solid #34d399;padding:5px 9px;border-radius:5px;font-size:.76rem;color:var(--sub);">18:00 헬스장 🏋️</div></div></div>
+      <div class="wcard"><div class="wcard-label">✅ 할 일</div><div style="display:flex;flex-direction:column;gap:8px;margin-top:6px;"><div style="display:flex;align-items:center;gap:9px;font-size:.83rem;"><div style="width:15px;height:15px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:.58rem;color:#fff;flex-shrink:0;">✓</div><span style="text-decoration:line-through;color:var(--muted);">PR #42 리뷰</span></div><div style="display:flex;align-items:center;gap:9px;font-size:.83rem;"><div style="width:15px;height:15px;border-radius:50%;border:1.5px solid var(--muted);flex-shrink:0;"></div><span style="color:var(--sub);">프로덕션 배포</span></div></div></div>
+      <div class="wcard" style="min-width:185px;"><div class="wcard-label">📝 메모</div><div style="font-size:.8rem;color:var(--sub);line-height:1.7;margin-top:6px;">아이디어<br>— 다크모드 개선<br>— 위젯 추가<br>— PR 리뷰 요청</div></div>
+      <div class="wcard"><div class="wcard-label">🎯 집중 타이머</div><div style="position:relative;width:80px;height:80px;margin:8px auto;"><svg width="80" height="80" style="transform:rotate(-90deg)"><circle cx="40" cy="40" r="34" fill="none" stroke="var(--border)" stroke-width="5"/><circle cx="40" cy="40" r="34" fill="none" stroke="var(--accent)" stroke-width="5" stroke-dasharray="213" stroke-dashoffset="60" stroke-linecap="round"/></svg><div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;"><div style="font-size:1.3rem;font-weight:800;">18:32</div><div style="font-size:.62rem;color:var(--muted);">집중</div></div></div></div>
+      <div class="wcard"><div class="wcard-label">📈 주식</div><div style="display:flex;flex-direction:column;gap:7px;margin-top:6px;"><div style="display:flex;justify-content:space-between;font-size:.83rem;"><span style="font-weight:700;">AAPL</span><span style="color:#34d399;font-weight:600;">+1.2%</span></div><div style="display:flex;justify-content:space-between;font-size:.83rem;"><span style="font-weight:700;">NVDA</span><span style="color:#34d399;font-weight:600;">+3.4%</span></div><div style="display:flex;justify-content:space-between;font-size:.83rem;"><span style="font-weight:700;">TSLA</span><span style="color:#f87171;font-weight:600;">-0.8%</span></div></div></div>
+      <div class="wcard" style="min-width:200px;"><div class="wcard-label">💬 명언</div><div style="font-size:.85rem;line-height:1.65;font-style:italic;color:#c4b5fd;margin-top:6px;">"미래를 예측하는 가장 좋은 방법은 직접 만드는 것이다."</div><div style="font-size:.72rem;color:var(--muted);margin-top:10px;">— Alan Kay</div></div>
       <div class="wcard"><div class="wcard-label">🕐 시계</div><div style="font-size:2.2rem;font-weight:800;">09:41</div></div>
-      <div class="wcard"><div class="wcard-label">☀️ 날씨</div><div style="font-size:2.6rem;font-weight:800;">24°</div></div>
+      <div class="wcard"><div class="wcard-label">☀️ 날씨</div><div style="font-size:2.6rem;font-weight:800;">24°</div><div style="font-size:.8rem;color:var(--sub);">서울 · 맑음</div></div>
+      <div class="wcard" style="min-width:210px;"><div class="wcard-label">📅 캘린더</div><div style="display:flex;flex-direction:column;gap:5px;margin-top:6px;"><div style="background:rgba(139,92,246,.18);border-left:2px solid var(--accent);padding:5px 9px;border-radius:5px;font-size:.76rem;color:var(--sub);">10:00 팀 스탠드업</div></div></div>
+      <div class="wcard"><div class="wcard-label">📈 주식</div><div style="font-size:.9rem;color:var(--green);font-weight:700;margin-top:6px;">AAPL +1.2%</div></div>
+      <div class="wcard" style="min-width:200px;"><div class="wcard-label">💬 명언</div><div style="font-size:.85rem;line-height:1.65;font-style:italic;color:#c4b5fd;margin-top:6px;">"미래를 예측하는 가장 좋은 방법은 직접 만드는 것이다."</div></div>
     </div>
   </div>
-  <div class="marquee-track" style="margin-top:16px;">
-    <div class="marquee-inner marquee-right">
-      <div class="wcard" style="min-width:200px;"><div class="wcard-label">🌍 세계 시계</div><div style="display:flex;gap:10px;justify-content:center;margin-top:4px;"><div style="text-align:center;font-size:.76rem;"><div style="color:var(--muted);">서울</div><div style="font-size:1.1rem;font-weight:700;">09:41</div></div><div style="text-align:center;font-size:.76rem;"><div style="color:var(--muted);">뉴욕</div><div style="font-size:1.1rem;font-weight:700;">20:41</div></div><div style="text-align:center;font-size:.76rem;"><div style="color:var(--muted);">런던</div><div style="font-size:1.1rem;font-weight:700;">01:41</div></div></div></div>
-      <div class="wcard"><div class="wcard-label">⏳ 카운트다운</div><div style="font-size:.76rem;color:var(--muted);margin-bottom:6px;">여름 휴가</div><div style="text-align:center;font-size:2rem;font-weight:800;color:#c4b5fd;">D-12</div></div>
-      <div class="wcard"><div class="wcard-label">🪙 코인</div><div style="display:flex;flex-direction:column;gap:6px;margin-top:4px;"><div style="display:flex;justify-content:space-between;font-size:.82rem;"><span style="font-weight:700;">BTC</span><span style="color:#34d399;">$67,420 +2.1%</span></div><div style="display:flex;justify-content:space-between;font-size:.82rem;"><span style="font-weight:700;">ETH</span><span style="color:#34d399;">$3,510 +1.4%</span></div></div></div>
-      <div class="wcard" style="min-width:200px;"><div class="wcard-label">🔍 검색</div><div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:10px;padding:8px 12px;margin-top:6px;"><span style="color:var(--muted);">🔍</span><span style="font-size:.82rem;color:var(--muted);">웹 검색...</span></div></div>
-      <div class="wcard" style="min-width:180px;"><div class="wcard-label">🔖 북마크</div><div style="display:flex;flex-direction:column;gap:5px;margin-top:4px;"><div style="font-size:.8rem;">🐙 GitHub</div><div style="font-size:.8rem;">📰 네이버 뉴스</div><div style="font-size:.8rem;">🎨 Figma</div></div></div>
-      <div class="wcard" style="min-width:200px;"><div class="wcard-label">📰 RSS 피드</div><div style="border-left:2px solid var(--accent);padding-left:8px;font-size:.76rem;line-height:1.4;margin-top:4px;">AI 에이전트의 미래 2026<div style="color:var(--muted);font-size:.68rem;margin-top:2px;">TechCrunch · 2시간 전</div></div></div>
-      <div class="wcard" style="min-width:190px;"><div class="wcard-label">🎵 재생 중</div><div style="display:flex;align-items:center;gap:10px;margin-top:6px;"><div style="width:40px;height:40px;border-radius:8px;background:linear-gradient(135deg,#8b5cf6,#6366f1);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.2rem;">🎵</div><div><div style="font-size:.82rem;font-weight:600;">Blinding Lights</div><div style="font-size:.72rem;color:var(--muted);">The Weeknd</div></div></div></div>
-      <div class="wcard"><div class="wcard-label">💪 습관</div><div style="font-size:.78rem;margin-top:4px;"><div style="display:flex;justify-content:space-between;margin-bottom:3px;"><span>🏃 달리기</span><span style="color:var(--green);">7일 연속 🔥</span></div><div style="height:3px;background:var(--border);border-radius:2px;"><div style="width:100%;height:100%;background:var(--green);border-radius:2px;"></div></div></div></div>
-      <div class="wcard" style="min-width:200px;"><div class="wcard-label">🌍 세계 시계</div><div style="display:flex;gap:10px;justify-content:center;margin-top:4px;"><div style="text-align:center;font-size:.76rem;"><div style="color:var(--muted);">서울</div><div style="font-size:1.1rem;font-weight:700;">09:41</div></div></div></div>
-      <div class="wcard"><div class="wcard-label">⏳ 카운트다운</div><div style="text-align:center;font-size:2rem;font-weight:800;color:#c4b5fd;">D-12</div></div>
+  <div class="marquee-track" style="margin-top:14px;">
+    <div class="marquee-inner mr">
+      <div class="wcard" style="min-width:210px;"><div class="wcard-label">🌍 세계 시계</div><div style="display:flex;gap:12px;justify-content:center;margin-top:6px;"><div style="text-align:center;"><div style="font-size:.7rem;color:var(--muted);">서울</div><div style="font-size:1.1rem;font-weight:700;">09:41</div></div><div style="text-align:center;"><div style="font-size:.7rem;color:var(--muted);">뉴욕</div><div style="font-size:1.1rem;font-weight:700;">20:41</div></div><div style="text-align:center;"><div style="font-size:.7rem;color:var(--muted);">런던</div><div style="font-size:1.1rem;font-weight:700;">01:41</div></div></div></div>
+      <div class="wcard"><div class="wcard-label">⏳ 카운트다운</div><div style="font-size:.76rem;color:var(--muted);margin-bottom:6px;">여름 휴가</div><div style="text-align:center;font-size:2.2rem;font-weight:800;color:#c4b5fd;">D-12</div></div>
+      <div class="wcard"><div class="wcard-label">🪙 코인</div><div style="display:flex;flex-direction:column;gap:7px;margin-top:6px;"><div style="display:flex;justify-content:space-between;font-size:.83rem;"><span style="font-weight:700;">BTC</span><span style="color:#34d399;font-weight:600;">+2.1%</span></div><div style="display:flex;justify-content:space-between;font-size:.83rem;"><span style="font-weight:700;">ETH</span><span style="color:#34d399;font-weight:600;">+1.4%</span></div></div></div>
+      <div class="wcard" style="min-width:200px;"><div class="wcard-label">🔍 검색</div><div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:10px;padding:9px 12px;margin-top:6px;"><span style="color:var(--muted);">🔍</span><span style="font-size:.83rem;color:var(--muted);">웹 검색...</span></div></div>
+      <div class="wcard" style="min-width:185px;"><div class="wcard-label">🔖 북마크</div><div style="display:flex;flex-direction:column;gap:6px;margin-top:6px;"><div style="font-size:.82rem;color:var(--sub);">🐙 GitHub</div><div style="font-size:.82rem;color:var(--sub);">📰 네이버 뉴스</div><div style="font-size:.82rem;color:var(--sub);">🎨 Figma</div></div></div>
+      <div class="wcard" style="min-width:200px;"><div class="wcard-label">📰 RSS</div><div style="border-left:2px solid var(--accent);padding-left:9px;font-size:.77rem;line-height:1.5;margin-top:6px;color:var(--sub);">AI 에이전트의 미래 2026<div style="color:var(--muted);font-size:.69rem;margin-top:3px;">TechCrunch · 2시간 전</div></div></div>
+      <div class="wcard" style="min-width:190px;"><div class="wcard-label">🎵 재생 중</div><div style="display:flex;align-items:center;gap:10px;margin-top:8px;"><div style="width:42px;height:42px;border-radius:9px;background:linear-gradient(135deg,#8b5cf6,#6366f1);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.2rem;">🎵</div><div><div style="font-size:.83rem;font-weight:600;">Blinding Lights</div><div style="font-size:.72rem;color:var(--muted);">The Weeknd</div></div></div></div>
+      <div class="wcard"><div class="wcard-label">💪 습관</div><div style="font-size:.8rem;margin-top:6px;"><div style="display:flex;justify-content:space-between;margin-bottom:5px;"><span style="color:var(--sub);">🏃 달리기</span><span style="color:var(--green);font-weight:700;">7일 🔥</span></div><div style="height:4px;background:var(--border);border-radius:2px;"><div style="width:100%;height:100%;background:var(--green);border-radius:2px;"></div></div></div></div>
+      <div class="wcard" style="min-width:210px;"><div class="wcard-label">🌍 세계 시계</div><div style="display:flex;gap:12px;justify-content:center;margin-top:6px;"><div style="text-align:center;"><div style="font-size:.7rem;color:var(--muted);">서울</div><div style="font-size:1.1rem;font-weight:700;">09:41</div></div><div style="text-align:center;"><div style="font-size:.7rem;color:var(--muted);">뉴욕</div><div style="font-size:1.1rem;font-weight:700;">20:41</div></div></div></div>
+      <div class="wcard"><div class="wcard-label">⏳ 카운트다운</div><div style="text-align:center;font-size:2.2rem;font-weight:800;color:#c4b5fd;">D-12</div></div>
+      <div class="wcard"><div class="wcard-label">🪙 코인</div><div style="font-size:.9rem;color:var(--green);font-weight:700;margin-top:6px;">BTC +2.1%</div></div>
+      <div class="wcard"><div class="wcard-label">💪 습관</div><div style="font-size:.9rem;color:var(--green);font-weight:700;margin-top:6px;">7일 연속 🔥</div></div>
     </div>
   </div>
 </section>
 
-<div class="proof-strip" style="border-top:1px solid var(--border);border-bottom:none;">
-  <div class="proof-item">🆓 19종 위젯 영원히 무료</div>
-  <div class="proof-dot"></div>
-  <div class="proof-item">🔒 데이터는 브라우저에만 저장</div>
-  <div class="proof-dot"></div>
-  <div class="proof-item">🚫 광고 없음</div>
-</div>
-
 <section id="features">
   <div class="inner">
-    <h2 class="reveal">한 화면에 필요한 모든 것</h2>
-    <p class="sub reveal reveal-delay-1">길게 눌러 편집, 드래그로 이동, 모서리 끌어 리사이즈. 전부 로컬에서 빠르게.</p>
+    <div class="section-header" style="margin-bottom:0;">
+      <div class="eyebrow-small">GridWidget 특징</div>
+      <h2 class="reveal">필요한 모든 것, 탭 하나에</h2>
+      <p class="section-sub reveal d1">길게 눌러 편집, 드래그로 이동, 모서리 끌어 리사이즈. 전부 로컬에서 빠르고 안전하게.</p>
+    </div>
     <div class="features-grid">
-      <div class="feat-card reveal reveal-delay-1"><div class="feat-icon">🕐</div><h3>시계 &amp; 타이머</h3><p>아날로그·디지털·세계시계, 스톱워치, 타이머, D-Day까지 초 단위로.</p></div>
-      <div class="feat-card reveal reveal-delay-2"><div class="feat-icon">📅</div><h3>캘린더 &amp; 할 일</h3><p>Google 캘린더 일정과 Tasks 할 일을 보고, 대시보드에서 바로 추가합니다.</p></div>
-      <div class="feat-card reveal reveal-delay-3"><div class="feat-icon">📝</div><h3>메모</h3><p>메모를 본인 Google Drive의 보이는 파일로 동기화해 어디서나 편집.</p></div>
-      <div class="feat-card reveal reveal-delay-4"><div class="feat-icon">☀️</div><h3>날씨 &amp; 일출일몰</h3><p>Open-Meteo 기반 무료 날씨·대기질·일출일몰 정보. API 키 불필요.</p></div>
-      <div class="feat-card reveal reveal-delay-5"><div class="feat-icon">📈</div><h3>시세 &amp; 환율</h3><p>주식·암호화폐·환율을 위젯 하나로 빠르게 확인.</p></div>
-      <div class="feat-card reveal reveal-delay-6"><div class="feat-icon">🎯</div><h3>생산성</h3><p>목표 링·포모도로·계산기·바로가기·RSS 피드·습관 트래커·검색바.</p></div>
+      <div class="feat-card reveal d1"><div class="feat-icon">🕐</div><h3>시계 & 타이머</h3><p>아날로그·디지털 시계, 19개 시간대 세계시계, 포모도로 타이머, D-Day 카운트다운. 시간 위젯의 모든 것.</p></div>
+      <div class="feat-card reveal d2"><div class="feat-icon">📅</div><h3>캘린더 & 할 일</h3><p>구글 캘린더 일정과 할 일을 한눈에 확인. 새 탭에서 바로 추가·완료 처리 — 앱 전환 없이.</p></div>
+      <div class="feat-card reveal d3"><div class="feat-icon">📝</div><h3>메모</h3><p>아이디어를 즉시 기록. Google Drive 파일 또는 Notion 페이지(Pro)에 동기화. 어디서나 편집 가능.</p></div>
+      <div class="feat-card reveal d4"><div class="feat-icon">☀️</div><h3>날씨 & 대기질</h3><p>정밀 날씨, 5일 예보, UV 지수, 일출·일몰 — Open-Meteo 기반. API 키 불필요, 항상 무료.</p></div>
+      <div class="feat-card reveal d5"><div class="feat-icon">📈</div><h3>주식 & 코인</h3><p>포트폴리오 주가와 암호화폐 시세를 한눈에. 종목 직접 편집 가능. 실시간 시세, 항상 보이는 곳에.</p></div>
+      <div class="feat-card reveal d6"><div class="feat-icon">🎯</div><h3>생산성 도구</h3><p>습관 트래커·스트릭, 검색바(구글/네이버/빙), 바로가기, 북마크 독, RSS 피드, 명언.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="testimonials">
+  <div class="inner">
+    <div class="section-header" style="margin-bottom:0;">
+      <div class="eyebrow-small">사용자 후기</div>
+      <h2 class="reveal">시간을 소중히 여기는 사람들의 선택</h2>
+      <p class="section-sub reveal d1">학생부터 개발자까지, GridWidget은 모든 워크플로우에 맞습니다.</p>
+    </div>
+    <div class="testimonials-grid">
+      <div class="tcard reveal d1">
+        <div class="tcard-quote">"</div>
+        <p>GridWidget이 없었으면 학교생활이 훨씬 힘들었을 거예요. 마감 확인, 날씨 체크, 메모까지 탭 하나에서 다 되니까 집중력이 훨씬 높아졌어요.</p>
+        <div class="tcard-author">
+          <div class="tcard-avatar" style="background:linear-gradient(135deg,#8b5cf6,#6366f1);">이</div>
+          <div><div class="tcard-name">이지은</div><div class="tcard-role">대학생</div></div>
+        </div>
+      </div>
+      <div class="tcard reveal d2">
+        <div class="tcard-quote">"</div>
+        <p>개발자한테 컨텍스트 스위칭은 생산성 킬러인데, 할 일·캘린더·집중 타이머를 새 탭 하나로 해결하니까 코딩에 더 집중할 수 있어요.</p>
+        <div class="tcard-author">
+          <div class="tcard-avatar" style="background:linear-gradient(135deg,#3b82f6,#6366f1);">김</div>
+          <div><div class="tcard-name">김민준</div><div class="tcard-role">소프트웨어 엔지니어</div></div>
+        </div>
+      </div>
+      <div class="tcard reveal d3">
+        <div class="tcard-quote">"</div>
+        <p>디자인 감각이 있는 저도 만족할 만큼 깔끔해요. 위젯 배치를 내 마음대로 할 수 있어서 새 탭이 진짜 내 공간처럼 느껴집니다.</p>
+        <div class="tcard-author">
+          <div class="tcard-avatar" style="background:linear-gradient(135deg,#ec4899,#8b5cf6);">박</div>
+          <div><div class="tcard-name">박서연</div><div class="tcard-role">프로덕트 디자이너</div></div>
+        </div>
+      </div>
+      <div class="tcard reveal d4">
+        <div class="tcard-quote">"</div>
+        <p>여러 프로젝트를 동시에 관리하는데, 다음 회의·우선순위·주가를 한눈에 볼 수 있어서 매일 새 탭 열 때마다 생산성이 올라가는 느낌이에요.</p>
+        <div class="tcard-author">
+          <div class="tcard-avatar" style="background:linear-gradient(135deg,#f59e0b,#ef4444);">최</div>
+          <div><div class="tcard-name">최성호</div><div class="tcard-role">프로젝트 매니저</div></div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
 <section id="pricing">
   <div class="inner">
-    <h2 class="reveal">심플한 가격</h2>
-    <p class="pricing-sub reveal reveal-delay-1">무료로 시작하고, 준비되면 업그레이드하세요.</p>
+    <div class="eyebrow-small" style="display:block;text-align:center;margin-bottom:18px;">가격</div>
+    <h2 class="reveal">무료로 시작하고,<br>필요할 때 업그레이드.</h2>
+    <p class="pricing-sub reveal d1">19종 위젯 전부 영원히 무료. Pro는 Notion 동기화와 우선 지원을 추가합니다.</p>
     <div class="pricing-grid">
-      <div class="plan reveal reveal-delay-1">
-        <div class="plan-tier">무료</div>
+      <div class="plan reveal d1">
+        <div class="plan-tier">영원히 무료</div>
         <div class="plan-price">$0</div>
-        <div class="plan-cadence">영원히</div>
+        <div class="plan-cadence">카드 없이 · 만료 없이</div>
         <ul class="plan-features">
           <li>19종 위젯 전부</li>
           <li>드래그·리사이즈·잠금</li>
-          <li>구글 캘린더·할 일</li>
-          <li>드라이브 메모 동기화</li>
-          <li>날씨, 주식, 코인</li>
+          <li>구글 캘린더 & 할 일</li>
+          <li>Google Drive 메모 동기화</li>
+          <li>날씨·주식·코인</li>
           <li>RSS·포모도로·습관</li>
           <li>Import / Export 백업</li>
         </ul>
-        <a class="plan-btn free" href="https://chromewebstore.google.com/detail/jppmdhafklhcaipkjlgmoonnngpeeege">무료 설치</a>
+        <a class="plan-btn free" href="https://chromewebstore.google.com/detail/jppmdhafklhcaipkjlgmoonnngpeeege">Chrome에 무료 설치</a>
       </div>
-      <div class="plan featured reveal reveal-delay-2">
-        <div class="plan-badge">Pro · 프로</div>
+      <div class="plan featured reveal d2">
+        <div class="plan-badge">Pro</div>
         <div class="plan-tier" style="margin-top:10px;">플랜 선택</div>
-        <ul class="plan-features" style="margin:16px 0 24px;">
+        <ul class="plan-features" style="margin:18px 0 24px;">
           <li>Free 전부 포함</li>
-          <li>노션 메모 동기화</li>
+          <li>Notion 메모 동기화</li>
           <li>우선 지원</li>
-          <li>향후 기능 전부</li>
+          <li>향후 신기능 전부</li>
         </ul>
         <div class="plan-options">
           <div class="plan-option">
@@ -264,31 +384,74 @@
   </div>
 </section>
 
+<section id="faq">
+  <div class="inner">
+    <div class="section-header" style="margin-bottom:0;">
+      <div class="eyebrow-small">자주 묻는 질문</div>
+      <h2 class="reveal">궁금한 점이 있으신가요?</h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">GridWidget이 뭔가요?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+        <div class="faq-a"><p>GridWidget은 크롬 새 탭 페이지를 완전히 커스터마이즈 가능한 개인 대시보드로 바꿔줍니다. 시계, 캘린더, 할 일, 날씨, 주식, 메모, 습관, 집중 타이머 등 19종 위젯을 원하는 대로 배치할 수 있습니다.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">정말 무료인가요? 숨겨진 비용은 없나요?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+        <div class="faq-a"><p>네, 19종 위젯이 광고·구독·데이터 수집 없이 영원히 무료입니다. Pro($1.99/월)는 Notion 동기화와 우선 지원을 추가하지만, 기본 대시보드에는 전혀 필요하지 않습니다.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">구글 권한을 왜 요청하나요?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+        <div class="faq-a"><p>캘린더, 할 일, Drive를 연결할 때만 요청됩니다. 안전한 OAuth 방식이라 비밀번호를 절대 보지 않으며, 데이터는 서버로 전송되지 않습니다. myaccount.google.com/permissions에서 언제든 해지할 수 있습니다.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">레이아웃을 내 마음대로 바꿀 수 있나요?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+        <div class="faq-a"><p>물론입니다. 위젯을 드래그로 원하는 위치에, 모서리를 끌어 원하는 크기로. 완성되면 레이아웃 잠금. 배경 프리셋 10종 이상 또는 커스텀 이미지 URL을 사용할 수 있습니다.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">여러 기기에서 설정이 동기화되나요?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+        <div class="faq-a"><p>네, 크롬 기본 동기화 기능으로 자동 동기화됩니다. 별도 계정 불필요. Export로 전체 백업 JSON을 저장하고, 다른 기기에서 Import해도 됩니다.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="final-cta">
+  <div class="inner">
+    <h2 class="reveal">오늘부터, 새 탭이<br>달라집니다.</h2>
+    <p class="section-sub reveal d1" style="margin:0 auto 40px;">탭을 여러 개 열지 마세요. 캘린더, 날씨, 할 일, 메모 — 전부 하나의 대시보드에. 19종 위젯, 영원히 무료.</p>
+    <div class="final-cta-row reveal d2">
+      <a class="btn-install" href="https://chromewebstore.google.com/detail/jppmdhafklhcaipkjlgmoonnngpeeege">✓&nbsp; Chrome에 무료 설치</a>
+      <a class="btn-pricing" href="#pricing">Pro 플랜 보기</a>
+    </div>
+  </div>
+</section>
+
 <section id="privacy">
   <div class="inner">
-    <h2 class="reveal">당신의 데이터는 당신 것입니다</h2>
-    <p class="sub reveal reveal-delay-1">GridWidget는 데이터를 개발자 서버로 수집·전송·판매하지 않습니다. 모든 데이터는 사용자의 브라우저와 본인 Google 계정 안에만 머무릅니다.</p>
-    <div class="privacy-grid">
-      <div class="perm-card reveal reveal-delay-1"><h4>Google Calendar<br><small style="font-weight:400;color:var(--muted);">calendar.events</small></h4><p>캘린더 위젯에서 일정을 보여주고 대시보드에서 직접 추가/수정합니다. 개발자 서버로 전송되지 않습니다.</p></div>
-      <div class="perm-card reveal reveal-delay-2"><h4>Google Tasks<br><small style="font-weight:400;color:var(--muted);">tasks</small></h4><p>할 일 위젯에서 작업 목록을 보여주고 할 일을 추가·완료 처리합니다. 데이터는 사용자의 Google Tasks에만 머무릅니다.</p></div>
-      <div class="perm-card reveal reveal-delay-3"><h4>Google Drive<br><small style="font-weight:400;color:var(--muted);">drive.file</small></h4><p>메모 위젯이 만든 파일에만 접근합니다. 사용자의 다른 Drive 파일에는 접근하지 않습니다.</p></div>
-      <div class="perm-card reveal reveal-delay-4"><h4>프로필 / 이메일<br><small style="font-weight:400;color:var(--muted);">userinfo</small></h4><p>로그인한 계정을 화면에 표시하기 위해서만 사용합니다.</p></div>
+    <div class="section-header" style="margin-bottom:0;">
+      <div class="eyebrow-small">프라이버시 우선</div>
+      <h2 class="reveal">당신의 데이터는 당신 것</h2>
+      <p class="section-sub reveal d1">GridWidget은 데이터를 수집·전송·판매하지 않습니다. 모든 것은 브라우저와 본인의 Google 계정 안에만 있습니다.</p>
     </div>
-    <p style="margin-top:36px;font-size:.85rem;color:var(--muted);">자세한 내용은 <a href="privacy-policy.html" style="color:var(--accent);">개인정보처리방침</a>을 확인하세요. 권한은 <a href="https://myaccount.google.com/permissions" style="color:var(--accent);">Google 계정 권한 페이지</a>에서 언제든 해지할 수 있습니다.</p>
+    <div class="privacy-grid">
+      <div class="perm-card reveal d1"><h4>Google Calendar<br><small style="font-weight:400;color:var(--muted);">calendar.events</small></h4><p>일정을 보여주고 대시보드에서 추가할 수 있습니다. GridWidget 서버로 전송되지 않습니다.</p></div>
+      <div class="perm-card reveal d2"><h4>Google Tasks<br><small style="font-weight:400;color:var(--muted);">tasks</small></h4><p>할 일을 보여주고 완료 처리합니다. 데이터는 Google Tasks 계정에만 저장됩니다.</p></div>
+      <div class="perm-card reveal d3"><h4>Google Drive<br><small style="font-weight:400;color:var(--muted);">drive.file</small></h4><p>GridWidget이 만든 파일에만 접근합니다. 다른 Drive 파일은 절대 읽지 않습니다.</p></div>
+      <div class="perm-card reveal d4"><h4>프로필 / 이메일<br><small style="font-weight:400;color:var(--muted);">userinfo</small></h4><p>화면에 로그인한 계정명을 표시하기 위해서만 사용합니다. 저장·전송하지 않습니다.</p></div>
+    </div>
+    <p style="margin-top:36px;font-size:.86rem;color:var(--muted);text-align:center;"><a href="privacy-policy.html" style="color:var(--accent);">개인정보처리방침</a> 전문 보기. Google 권한은 <a href="https://myaccount.google.com/permissions" style="color:var(--accent);">myaccount.google.com/permissions</a>에서 언제든 해지 가능합니다.</p>
   </div>
 </section>
 
 <footer>
   <p>GridWidget · 개인 개발 프로젝트 &nbsp;·&nbsp; <a href="mailto:xkxkxk0303@gmail.com">xkxkxk0303@gmail.com</a> &nbsp;·&nbsp; <a href="privacy-policy.html">개인정보처리방침</a></p>
-  <p style="margin-top:14px;color:#555;">© 2026 GridWidget · gridwidget.de</p>
+  <p style="margin-top:14px;color:#444;">© 2026 GridWidget · gridwidget.de</p>
 </footer>
-<!--
-<script defer data-auto-init src="https://cdn.jsdelivr.net/npm/@polar-sh/checkout@latest/dist/embed.global.js"></script>
--->
 <script>
-function switchLang(lang) { localStorage.setItem('gridwidget-lang', lang); window.location.href = lang + '.html'; }
-const observer = new IntersectionObserver(e => e.forEach(x => { if (x.isIntersecting) { x.target.classList.add('visible'); observer.unobserve(x.target); } }), { threshold: 0.12 });
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+function switchLang(l){localStorage.setItem('gridwidget-lang',l);if(l!=='ko')window.location.href=l+'.html';}
+function toggleFaq(el){const item=el.parentElement;const wasOpen=item.classList.contains('open');document.querySelectorAll('.faq-item.open').forEach(i=>i.classList.remove('open'));if(!wasOpen)item.classList.add('open');}
+const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');obs.unobserve(x.target);}}),{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 </script>
 </body>
 </html>
