@@ -163,6 +163,46 @@
     .reveal.visible { opacity:1; transform:translateY(0); }
     .d1{transition-delay:.08s} .d2{transition-delay:.16s} .d3{transition-delay:.24s} .d4{transition-delay:.32s} .d5{transition-delay:.4s} .d6{transition-delay:.48s}
 
+    /* === Customize / Jiggle === */
+    #customize { padding:96px 24px; background:var(--bg); }
+    .customize-grid { display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center; }
+    .jiggle-demo { background:var(--surface); border:1px solid var(--border); border-radius:22px; padding:24px; display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    @keyframes jig { 0%,100%{transform:rotate(-1.8deg) scale(1.01)} 50%{transform:rotate(1.8deg) scale(1.01)} }
+    .jw { background:rgba(22,22,42,.95); border:1px solid rgba(139,92,246,.4); border-radius:14px; padding:14px 12px; position:relative; animation:jig .3s ease-in-out infinite; box-shadow:0 0 0 1.5px rgba(139,92,246,.18); }
+    .jw:nth-child(2){animation-delay:.07s} .jw:nth-child(3){animation-delay:.14s} .jw:nth-child(4){animation-delay:.21s}
+    .jw-x { position:absolute; top:-8px; right:-8px; width:22px; height:22px; border-radius:50%; background:#ef4444; display:flex; align-items:center; justify-content:center; font-size:.72rem; font-weight:900; color:#fff; box-shadow:0 2px 8px rgba(239,68,68,.5); }
+    .jw-label { font-size:.65rem; font-weight:700; color:var(--muted); letter-spacing:.06em; text-transform:uppercase; margin-bottom:8px; }
+    .jw-drag { position:absolute; bottom:8px; right:8px; font-size:.7rem; color:var(--border2); }
+    .customize-points { list-style:none; margin-top:28px; display:flex; flex-direction:column; gap:11px; }
+    .customize-points li { display:flex; align-items:center; gap:11px; font-size:.93rem; color:var(--sub); }
+    .customize-points li span.ck { color:var(--green); font-weight:800; flex-shrink:0; }
+    .theme-row { display:flex; gap:7px; margin-top:16px; align-items:center; flex-wrap:wrap; }
+    .tswatch { width:26px; height:26px; border-radius:7px; border:1.5px solid rgba(255,255,255,.14); flex-shrink:0; }
+    .theme-label { font-size:.78rem; color:var(--muted); margin-left:4px; }
+    /* === Google === */
+    #google { background:var(--surface); padding:96px 24px; }
+    .google-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:16px; margin-top:48px; }
+    .gcard { background:rgba(22,22,42,.8); border:1px solid var(--border); border-radius:var(--radius); padding:26px 22px; transition:border-color .2s,transform .2s; }
+    .gcard:hover { border-color:var(--border2); transform:translateY(-4px); }
+    .gcard-icon { font-size:2rem; margin-bottom:14px; }
+    .gcard h3 { font-size:.95rem; font-weight:700; margin-bottom:8px; color:var(--text); }
+    .gcard p { font-size:.84rem; color:var(--sub); line-height:1.65; }
+    .gcard .scope { display:inline-block; font-size:.7rem; font-weight:600; color:var(--muted); background:rgba(255,255,255,.05); border:1px solid var(--border); border-radius:6px; padding:2px 8px; margin-top:10px; }
+    /* === Power Features === */
+    #power-features { padding:80px 24px; background:var(--bg); }
+    .pf-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(270px,1fr)); gap:16px; margin-top:48px; }
+    .pf-card { border:1px solid var(--border); border-radius:var(--radius); padding:28px 24px; transition:border-color .2s,transform .2s; background:rgba(31,31,58,.6); }
+    .pf-card:hover { border-color:var(--border2); transform:translateY(-4px); box-shadow:0 12px 36px rgba(139,92,246,.18); }
+    .pf-tag { display:inline-block; font-size:.68rem; font-weight:700; padding:3px 10px; border-radius:20px; margin-bottom:14px; }
+    .pf-card h3 { font-size:1rem; font-weight:700; margin-bottom:10px; color:var(--text); }
+    .pf-card p { font-size:.87rem; color:var(--sub); line-height:1.68; }
+    .media-mini { display:flex; align-items:center; gap:10px; background:rgba(22,22,42,.9); border:1px solid var(--border); border-radius:10px; padding:10px 12px; margin-top:14px; }
+    .media-art { width:36px; height:36px; border-radius:7px; background:linear-gradient(135deg,#1db954,#1ed760); display:flex; align-items:center; justify-content:center; font-size:1rem; flex-shrink:0; }
+    .media-info { flex:1; min-width:0; }
+    .media-title { font-size:.8rem; font-weight:600; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .media-src { font-size:.7rem; color:var(--muted); }
+
+    @media(max-width:780px){ .customize-grid{grid-template-columns:1fr;gap:40px} }
     @media(max-width:640px){
       nav{padding:0 16px} .nav-links{display:none} .nav-lang{display:none}
       #hero{padding:80px 16px 64px}
@@ -267,6 +307,161 @@
       <div class="wcard"><div class="wcard-label">⏳ 카운트다운</div><div style="text-align:center;font-size:2.2rem;font-weight:800;color:#c4b5fd;">D-12</div></div>
       <div class="wcard"><div class="wcard-label">🪙 코인</div><div style="font-size:.9rem;color:var(--green);font-weight:700;margin-top:6px;">BTC +2.1%</div></div>
       <div class="wcard"><div class="wcard-label">💪 습관</div><div style="font-size:.9rem;color:var(--green);font-weight:700;margin-top:6px;">7일 연속 🔥</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- === 커스터마이즈 / 지글 모드 === -->
+<section id="customize">
+  <div class="inner">
+    <div class="customize-grid">
+      <div class="jiggle-demo reveal">
+        <div class="jw">
+          <div class="jw-x">×</div>
+          <div class="jw-label">🕐 시계</div>
+          <div style="font-size:1.9rem;font-weight:800;letter-spacing:-.02em;">09:41</div>
+          <div style="font-size:.72rem;color:var(--muted);margin-top:3px;">화요일</div>
+          <div class="jw-drag">⠿</div>
+        </div>
+        <div class="jw">
+          <div class="jw-x">×</div>
+          <div class="jw-label">☀️ 날씨</div>
+          <div style="font-size:1.9rem;font-weight:800;">24°</div>
+          <div style="font-size:.72rem;color:var(--sub);margin-top:3px;">맑음</div>
+          <div class="jw-drag">⠿</div>
+        </div>
+        <div class="jw">
+          <div class="jw-x">×</div>
+          <div class="jw-label">🎯 집중</div>
+          <div style="font-size:1.5rem;font-weight:800;color:#c4b5fd;">18:32</div>
+          <div style="font-size:.7rem;color:var(--muted);margin-top:3px;">포모도로</div>
+          <div class="jw-drag">⠿</div>
+        </div>
+        <div class="jw">
+          <div class="jw-x">×</div>
+          <div class="jw-label">💪 습관</div>
+          <div style="font-size:.8rem;color:var(--green);font-weight:700;margin-top:4px;">7일 🔥</div>
+          <div style="height:3px;background:var(--border);border-radius:2px;margin-top:8px;"><div style="width:100%;height:100%;background:var(--green);border-radius:2px;"></div></div>
+          <div class="jw-drag">⠿</div>
+        </div>
+        <div style="grid-column:1/-1;text-align:center;padding:10px 0 2px;">
+          <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(139,92,246,.18);border:1px solid rgba(139,92,246,.4);border-radius:20px;padding:6px 18px;font-size:.78rem;font-weight:700;color:#c4b5fd;">
+            ✦ 지글 모드 — 길게 눌러 편집
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="eyebrow-small">내 마음대로</div>
+        <h2 class="reveal">내 레이아웃,<br>내 규칙.</h2>
+        <p class="reveal d1" style="color:var(--sub);font-size:1rem;line-height:1.75;margin-bottom:8px;">위젯을 길게 누르면 지글 모드 진입. 드래그로 재배치, 모서리 끌어 리사이즈, × 탭으로 삭제. 완성되면 그리드 잠금 — 아이폰 홈 화면처럼.</p>
+        <ul class="customize-points reveal d2">
+          <li><span class="ck">✓</span> iOS 스타일 드래그 & 리사이즈 그리드</li>
+          <li><span class="ck">✓</span> 레이아웃 잠금으로 실수 방지</li>
+          <li><span class="ck">✓</span> 기기별 레이아웃 자동 저장 (노트북 ≠ 모니터)</li>
+          <li><span class="ck">✓</span> 첫 설치 시 스타터팩 4종 — 즉시 사용 가능</li>
+          <li><span class="ck">✓</span> Import / Export 전체 백업</li>
+        </ul>
+        <div class="reveal d3" style="margin-top:28px;">
+          <div style="font-size:.8rem;color:var(--muted);margin-bottom:10px;font-weight:600;">배경 테마 10종 이상</div>
+          <div class="theme-row">
+            <div class="tswatch" style="background:linear-gradient(135deg,#1e1e32,#2d2d5a);"></div>
+            <div class="tswatch" style="background:linear-gradient(135deg,#0f0f1a,#1a0533);"></div>
+            <div class="tswatch" style="background:linear-gradient(135deg,#0a0a0a,#1a1a2e);"></div>
+            <div class="tswatch" style="background:linear-gradient(135deg,#0d1117,#161b22);"></div>
+            <div class="tswatch" style="background:linear-gradient(135deg,#1a0a2e,#2d1b5e);"></div>
+            <div class="tswatch" style="background:linear-gradient(135deg,#002244,#001a33);"></div>
+            <div class="tswatch" style="background:linear-gradient(135deg,#0d0d0d,#1a1a1a);"></div>
+            <div class="tswatch" style="background:linear-gradient(135deg,#1a1a2e,#16213e);"></div>
+            <div class="tswatch" style="background:linear-gradient(135deg,#2d1b2e,#4a1942);"></div>
+            <div class="tswatch" style="background:radial-gradient(ellipse at top,#0a0020,#000);"></div>
+            <span class="theme-label">+ 커스텀 이미지 URL</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- === 구글 연동 === -->
+<section id="google">
+  <div class="inner">
+    <div class="section-header" style="margin-bottom:0;">
+      <div class="eyebrow-small">구글 워크스페이스</div>
+      <h2 class="reveal">구글 서비스 전부,<br>탭 하나에.</h2>
+      <p class="section-sub reveal d1">한 번 연결하면 끝. 캘린더 확인, 할 일 완료 처리, 메모 동기화 — 새 탭에서 모두.</p>
+    </div>
+    <div class="google-grid">
+      <div class="gcard reveal d1">
+        <div class="gcard-icon">📅</div>
+        <h3>구글 캘린더</h3>
+        <p>오늘 일정과 다가오는 이벤트를 한눈에. 위젯에서 바로 일정 추가 — 탭 전환 없이.</p>
+        <span class="scope">calendar.events</span>
+      </div>
+      <div class="gcard reveal d2">
+        <div class="gcard-icon">✅</div>
+        <h3>구글 할 일</h3>
+        <p>할 일 목록 확인, 완료 처리를 Google Tasks 앱 열지 않고 바로. 추가한 항목은 즉시 동기화.</p>
+        <span class="scope">tasks</span>
+      </div>
+      <div class="gcard reveal d3">
+        <div class="gcard-icon">📝</div>
+        <h3>구글 드라이브 메모</h3>
+        <p>메모 위젯이 실제 Drive 파일에 동기화. Docs에서도 열리고, 어디서나 읽힙니다. 내 파일, 내 계정.</p>
+        <span class="scope">drive.file</span>
+      </div>
+      <div class="gcard reveal d4" style="border-color:rgba(139,92,246,.3);background:linear-gradient(160deg,rgba(22,22,42,.9),rgba(26,18,64,.6));">
+        <div class="gcard-icon">🔗</div>
+        <h3>탭 한 번으로 연결</h3>
+        <p>안전한 OAuth — 비밀번호는 절대 보지 않습니다. 캘린더·할일·드라이브 각각 독립적으로 연결·해제 가능.</p>
+        <span class="scope" style="color:var(--green);border-color:rgba(52,211,153,.3);">비밀번호 저장 없음</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- === 추가 기능 === -->
+<section id="power-features">
+  <div class="inner">
+    <div class="section-header" style="margin-bottom:0;">
+      <div class="eyebrow-small">한 발 더</div>
+      <h2 class="reveal">있는 줄 몰랐던<br>기능들.</h2>
+      <p class="section-sub reveal d1">새 탭을 열 때마다 진짜 쓸모 있다고 느끼게 해주는 디테일들.</p>
+    </div>
+    <div class="pf-grid">
+      <div class="pf-card reveal d1">
+        <div class="pf-tag" style="background:rgba(29,185,84,.12);color:#1db954;border:1px solid rgba(29,185,84,.3);">🎵 미디어 위젯</div>
+        <h3>로그인 없이 재생 중인 곡 감지</h3>
+        <p>열려 있는 탭에서 오디오를 자동 감지 — 유튜브, 스포티파이, 멜론 모두. OAuth 불필요. 권한 요청 없음. 그냥 됩니다.</p>
+        <div class="media-mini">
+          <div class="media-art">▶</div>
+          <div class="media-info">
+            <div class="media-title">Blinding Lights — The Weeknd</div>
+            <div class="media-src">Spotify · 재생 중</div>
+          </div>
+        </div>
+      </div>
+      <div class="pf-card reveal d2">
+        <div class="pf-tag" style="background:rgba(99,102,241,.12);color:#818cf8;border:1px solid rgba(99,102,241,.3);">🖥️ 멀티 디바이스</div>
+        <h3>화면마다 다른 레이아웃 기억</h3>
+        <p>노트북과 모니터의 레이아웃을 따로 기억합니다. 브라우저 창 크기를 바꾸면 그리드가 자동 적응하고, 각 해상도별로 저장.</p>
+        <div style="display:flex;gap:8px;margin-top:14px;">
+          <div style="flex:1;background:rgba(22,22,42,.9);border:1px solid var(--border);border-radius:9px;padding:10px;text-align:center;font-size:.75rem;color:var(--muted);">💻 노트북<div style="font-size:.7rem;color:var(--accent);margin-top:3px;">2열</div></div>
+          <div style="flex:1;background:rgba(22,22,42,.9);border:1px solid var(--border);border-radius:9px;padding:10px;text-align:center;font-size:.75rem;color:var(--muted);">🖥️ 데스크탑<div style="font-size:.7rem;color:var(--accent);margin-top:3px;">4열</div></div>
+          <div style="flex:1;background:rgba(22,22,42,.9);border:1px solid var(--border);border-radius:9px;padding:10px;text-align:center;font-size:.75rem;color:var(--muted);">📱 좁은 창<div style="font-size:.7rem;color:var(--accent);margin-top:3px;">1열</div></div>
+        </div>
+      </div>
+      <div class="pf-card reveal d3">
+        <div class="pf-tag" style="background:rgba(251,191,36,.1);color:#fbbf24;border:1px solid rgba(251,191,36,.3);">📱 앱 바로가기</div>
+        <h3>아이폰 스타일 앱 아이콘</h3>
+        <p>1×1 위젯으로 자주 쓰는 사이트를 iOS 홈 화면 아이콘처럼 배치. 커스텀 아이콘·색상 지정, 클릭 한 번으로 이동.</p>
+        <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;">
+          <div style="width:44px;height:44px;border-radius:11px;background:linear-gradient(135deg,#1da1f2,#0077b6);display:flex;align-items:center;justify-content:center;font-size:1.3rem;">🐦</div>
+          <div style="width:44px;height:44px;border-radius:11px;background:linear-gradient(135deg,#24292e,#454f5b);display:flex;align-items:center;justify-content:center;font-size:1.3rem;">🐙</div>
+          <div style="width:44px;height:44px;border-radius:11px;background:linear-gradient(135deg,#f24e1e,#ff7262);display:flex;align-items:center;justify-content:center;font-size:1.3rem;">🎨</div>
+          <div style="width:44px;height:44px;border-radius:11px;background:linear-gradient(135deg,#0f9d58,#34a853);display:flex;align-items:center;justify-content:center;font-size:1.3rem;">📊</div>
+          <div style="width:44px;height:44px;border-radius:11px;background:linear-gradient(135deg,#8b5cf6,#6366f1);display:flex;align-items:center;justify-content:center;font-size:.9rem;color:rgba(255,255,255,.5);">+</div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
