@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1280">
+<title>Promo 4 — Drag Placement</title>
+<style>
+:root{
+  --blue:#0a84ff;--green:#30d158;--orange:#ff9f0a;--red:#ff453a;--purple:#bf5af2;
+  --txt:#fff;--t2:rgba(255,255,255,.6);--t3:rgba(255,255,255,.34);--brd:rgba(255,255,255,.14);
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",system-ui,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased}
+html,body{width:1280px;height:800px;overflow:hidden;font-family:var(--font);color:var(--txt)}
+body{background:
+  radial-gradient(900px 700px at 85% 5%,rgba(40,98,235,.5),transparent 55%),
+  radial-gradient(700px 600px at -5% 80%,rgba(191,90,242,.3),transparent 55%),
+  radial-gradient(600px 500px at 50% 100%,rgba(20,190,200,.22),transparent 55%),
+  #0a0e1c}
+
+.frame{position:absolute;inset:0;display:flex;flex-direction:column}
+.chrome-bar{height:44px;background:rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.1);
+  display:flex;align-items:center;padding:0 16px;gap:10px;flex:none}
+.dots{display:flex;gap:7px}.dot{width:12px;height:12px;border-radius:50%}
+.urlbar{flex:1;max-width:460px;margin:0 auto;height:28px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.12);
+  border-radius:8px;display:flex;align-items:center;padding:0 12px;font-size:12px;color:var(--t2)}
+
+.dash{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.top-bar{padding:20px 32px 8px;display:flex;align-items:flex-end;justify-content:space-between}
+.hi{font-size:20px;font-weight:700}.hi small{display:block;font-size:11px;font-weight:500;color:var(--t2);margin-top:3px}
+.tools{display:flex;gap:10px}
+.tbtn{font-size:12px;font-weight:600;color:#fff;border:1px solid var(--brd);background:rgba(255,255,255,.08);padding:8px 14px;border-radius:999px}
+.tbtn.active{background:var(--blue);border-color:transparent}
+.edit-hint{text-align:center;font-size:12px;color:var(--t2);padding:4px 0 10px}
+
+.grid-wrap{flex:1;display:flex;justify-content:center;align-items:flex-start;padding:0 24px 20px;overflow:hidden}
+.grid{display:grid;grid-template-columns:repeat(10,86px);grid-auto-rows:86px;gap:11px;position:relative}
+
+/* Widget */
+.w{position:relative;border-radius:20px}
+.card{position:absolute;inset:0;border-radius:20px;overflow:hidden;padding:12px}
+.glass .card{background:linear-gradient(160deg,rgba(255,255,255,.12),rgba(255,255,255,.042));
+  border:1px solid var(--brd);box-shadow:0 10px 26px rgba(0,0,0,.36),inset 0 1px 0 rgba(255,255,255,.22);
+  backdrop-filter:blur(26px)}
+.cnt{height:100%;display:flex;flex-direction:column;min-height:0;position:relative;z-index:1}
+.w2{grid-column:span 2}.h2{grid-row:span 2}.w3{grid-column:span 3}.h3{grid-row:span 3}
+.w4{grid-column:span 4}
+.t{font-size:10px;font-weight:600;color:var(--t2)}
+.hn{font-size:12px;font-weight:700}
+.hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:3px}
+.ev{display:flex;gap:8px;margin-top:8px}.ev .bar{width:3px;border-radius:2px;align-self:stretch}
+.ev .et{font-size:9px;color:var(--t2)}.ev .en{font-size:12px;font-weight:600;margin-top:1px}
+.tk{display:flex;align-items:center;gap:8px;margin-top:6px;font-size:11px}
+.tk .cb{width:16px;height:16px;border-radius:5px;border:1.5px solid rgba(255,255,255,.4);flex:none;position:relative}
+.tk.dn .cb{background:var(--blue);border-color:transparent}
+.tk.dn .cb::after{content:"";position:absolute;left:4.5px;top:2px;width:4px;height:7px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
+.tk.dn span{color:var(--t3);text-decoration:line-through}
+.m-art{border-radius:10px;background:linear-gradient(135deg,#7b2ff0,#ff2d9b);flex:none}
+
+/* Edit mode jiggle */
+@keyframes wig{0%{transform:rotate(-1.2deg) scale(1.01)}50%{transform:rotate(1.2deg) scale(1.01)}100%{transform:rotate(-1.2deg) scale(1.01)}}
+.jig{animation:wig .34s ease-in-out infinite}
+.jig:nth-child(2n){animation-duration:.38s;animation-delay:-.12s}
+.jig:nth-child(3n){animation-duration:.31s;animation-delay:-.06s}
+
+/* dragging widget */
+.dragging{transform:scale(1.06) rotate(2deg)!important;animation:none!important;
+  box-shadow:0 24px 56px rgba(0,0,0,.55);z-index:50;opacity:.92;cursor:grabbing}
+
+/* badges */
+.badge{position:absolute;width:24px;height:24px;border-radius:50%;background:#eceef2;color:#1c1c1e;
+  display:flex;align-items:center;justify-content:center;z-index:30;box-shadow:0 2px 6px rgba(0,0,0,.4)}
+.del-b{top:-8px;left:-8px;font-size:18px;font-weight:600;line-height:1}
+.cust-b{top:-8px;right:-8px}
+.cust-b svg{width:12px;height:12px;fill:#1c1c1e}
+.handle{position:absolute;right:-6px;bottom:-6px;width:22px;height:22px;border-radius:50%;
+  background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center;z-index:30;
+  box-shadow:0 2px 6px rgba(0,0,0,.4)}
+.handle svg{width:11px;height:11px;stroke:#1c1c1e;stroke-width:2.4;fill:none;stroke-linecap:round}
+
+/* drag trail */
+.trail{position:absolute;pointer-events:none;opacity:0.3}
+.trail-dot{width:8px;height:8px;background:rgba(255,255,255,.6);border-radius:50%;position:absolute}
+
+/* ghost slot */
+.ghost .card{background:rgba(255,255,255,.03);border:1.6px dashed rgba(255,255,255,.2);
+  display:flex;align-items:center;justify-content:center;font-size:28px;color:var(--t3);font-weight:300}
+
+/* custom popover */
+.pop{position:absolute;z-index:300;width:220px;background:rgba(26,28,38,.96);backdrop-filter:blur(30px);
+  border:1px solid var(--brd);border-radius:17px;padding:13px;box-shadow:0 20px 50px rgba(0,0,0,.6)}
+.pop h4{font-size:10px;color:var(--t2);font-weight:700;margin-bottom:7px;letter-spacing:.3px}
+.pop .szs{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:11px}
+.pop .sz{font-size:11px;font-weight:600;padding:5px 9px;border-radius:8px;background:rgba(255,255,255,.08);border:1px solid var(--brd)}
+.pop .sz.on{background:var(--blue);border-color:transparent}
+.pop .sws{display:flex;gap:7px;margin-bottom:11px}
+.pop .sws i{width:20px;height:20px;border-radius:50%;cursor:pointer;border:2px solid transparent}
+.pop .sws i.on{border-color:#fff}
+.pop .src{font-size:10px;color:var(--t3);border-top:1px solid rgba(255,255,255,.1);padding-top:8px;line-height:1.4}
+
+/* caption */
+.caption{position:absolute;bottom:0;left:0;right:0;height:58px;
+  background:linear-gradient(0deg,rgba(10,14,28,.98) 40%,transparent);
+  display:flex;align-items:flex-end;justify-content:center;padding-bottom:13px;
+  font-size:19px;font-weight:700;letter-spacing:-.3px}
+</style>
+</head>
+<body>
+<div class="frame">
+  <div class="chrome-bar">
+    <div class="dots">
+      <div class="dot" style="background:#ff5f57"></div>
+      <div class="dot" style="background:#febc2e"></div>
+      <div class="dot" style="background:#28c840"></div>
+    </div>
+    <div class="urlbar">🔒 &nbsp;New Tab — Navi Dashboard · Edit Mode</div>
+  </div>
+
+  <div class="dash">
+    <div class="top-bar">
+      <div class="hi">Edit Mode <small>Drag widgets anywhere you want</small></div>
+      <div class="tools">
+        <button class="tbtn active" style="background:var(--blue)">Done</button>
+        <button class="tbtn">+ Widget</button>
+      </div>
+    </div>
+
+    <div class="grid-wrap">
+      <div class="grid">
+
+        <!-- 아날로그 Clock 2×2 jiggle -->
+        <div class="w glass w2 h2 jig">
+          <div class="card">
+            <div class="cnt" style="align-items:center;justify-content:center">
+              <svg viewBox="0 0 100 100" style="width:110px;height:110px">
+                <defs><radialGradient id="cf3" cx="50%" cy="36%" r="66%"><stop offset="0%" stop-color="#1c2334"/><stop offset="100%" stop-color="#0c1019"/></radialGradient></defs>
+                <circle cx="50" cy="50" r="47" fill="url(#cf3)" stroke="rgba(255,255,255,.16)"/>
+                <text x="50" y="20" text-anchor="middle" fill="rgba(255,255,255,.5)" font-size="7" font-weight="600">12</text>
+                <rect id="hh3" x="48.4" y="29" width="3.2" height="23" rx="1.6" fill="#fff"/>
+                <rect id="mh3" x="48.8" y="17" width="2.4" height="35" rx="1.2" fill="#fff"/>
+                <rect id="sh3" x="49.4" y="14" width="1.2" height="41" rx=".6" fill="#ff453a"/>
+                <circle cx="50" cy="50" r="3" fill="#fff"/><circle cx="50" cy="50" r="1.6" fill="#ff453a"/>
+              </svg>
+            </div>
+          </div>
+          <div class="badge del-b">−</div>
+          <div class="badge cust-b"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></div>
+          <div class="handle"><svg viewBox="0 0 24 24"><path d="M21 21H9M21 21V9M21 21L9 9"/></svg></div>
+        </div>
+
+        <!-- Weather 2×2 jiggle -->
+        <div class="w w2 h2 jig">
+          <div class="card" style="background:linear-gradient(160deg,#1f86ff,#0a5fe0)">
+            <div class="cnt">
+              <div class="t">San Francisco</div>
+              <div style="font-weight:700;font-size:44px;letter-spacing:-1px;line-height:1.1">21°</div>
+              <div style="font-size:11px;font-weight:600">Sunny · Feels 65°</div>
+            </div>
+          </div>
+          <div class="badge del-b">−</div>
+          <div class="badge cust-b"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></div>
+          <div class="handle"><svg viewBox="0 0 24 24"><path d="M21 21H9M21 21V9M21 21L9 9"/></svg></div>
+        </div>
+
+        <!-- Calendar 2×2 jiggle - being dragged -->
+        <div class="w glass w2 h2 dragging" style="grid-row:1;grid-column:5">
+          <div class="card">
+            <div class="cnt">
+              <div class="hdr"><span class="hn">Calendar</span><span style="font-size:9px;color:var(--blue)">+ Event</span></div>
+              <div class="ev"><div class="bar" style="background:var(--blue)"></div><div><div class="et">09:00</div><div class="en">Team Standup</div></div></div>
+              <div class="ev"><div class="bar" style="background:var(--green)"></div><div><div class="et">13:00</div><div class="en">Study Session</div></div></div>
+              <div class="ev"><div class="bar" style="background:var(--orange)"></div><div><div class="et">18:30</div><div class="en">Gym · PT</div></div></div>
+            </div>
+          </div>
+          <div class="badge del-b">−</div>
+          <div class="badge cust-b"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></div>
+        </div>
+
+        <!-- ghost target -->
+        <div class="w ghost w2 h2" style="grid-row:1;grid-column:7">
+          <div class="card">+</div>
+        </div>
+
+        <!-- Stocks 2×2 jiggle -->
+        <div class="w w2 h2 jig" style="grid-row:1;grid-column:9">
+          <div class="card" style="background:linear-gradient(160deg,#0e2118,#08130d)">
+            <div class="cnt">
+              <div class="hdr"><span class="hn">ChartSignal</span></div>
+              <div style="display:flex;justify-content:space-between;margin-top:8px;font-size:11px"><span style="font-weight:600">AAPL</span><span style="color:var(--green);font-weight:600">+1.2%</span></div>
+              <div style="display:flex;justify-content:space-between;margin-top:7px;font-size:11px"><span style="font-weight:600">TSLA</span><span style="color:var(--red);font-weight:600">-0.8%</span></div>
+              <div style="display:flex;justify-content:space-between;margin-top:7px;font-size:11px"><span style="font-weight:600">BTC</span><span style="color:var(--green);font-weight:600">+3.4%</span></div>
+            </div>
+          </div>
+          <div class="badge del-b">−</div>
+          <div class="badge cust-b"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></div>
+          <div class="handle"><svg viewBox="0 0 24 24"><path d="M21 21H9M21 21V9M21 21L9 9"/></svg></div>
+        </div>
+
+        <!-- Search 4×1 jiggle -->
+        <div class="w glass w4 jig" style="grid-row:3">
+          <div class="card">
+            <div class="cnt" style="justify-content:center">
+              <div style="display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.08);border:1px solid var(--brd);border-radius:11px;padding:0 12px;height:38px;color:var(--t2);font-size:12px">
+                <svg viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" width="14" height="14"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+                Search Google or type a URL
+              </div>
+            </div>
+          </div>
+          <div class="badge del-b">−</div>
+          <div class="badge cust-b"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></div>
+        </div>
+
+        <!-- Tasks 2×2 jiggle -->
+        <div class="w glass w2 h2 jig" style="grid-row:3">
+          <div class="card">
+            <div class="cnt">
+              <div class="hdr"><span class="hn">Tasks</span></div>
+              <div class="tk dn"><div class="cb"></div><span>Review PR #142</span></div>
+              <div class="tk dn"><div class="cb"></div><span>Deploy to staging</span></div>
+              <div class="tk"><div class="cb"></div><span>Write release notes</span></div>
+              <div class="tk"><div class="cb"></div><span>Update API docs</span></div>
+            </div>
+          </div>
+          <div class="badge del-b">−</div>
+          <div class="badge cust-b"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></div>
+          <div class="handle"><svg viewBox="0 0 24 24"><path d="M21 21H9M21 21V9M21 21L9 9"/></svg></div>
+        </div>
+
+        <!-- Media 2×1 jiggle -->
+        <div class="w jig w2" style="grid-row:3;grid-column:7">
+          <div class="card" style="background:linear-gradient(160deg,#33124a,#1c0c2c)">
+            <div class="cnt" style="flex-direction:row;align-items:center;gap:10px">
+              <div class="m-art" style="width:40px;height:40px"></div>
+              <div style="display:flex;flex-direction:column;flex:1">
+                <div style="font-weight:700;font-size:13px">Ditto</div>
+                <div style="font-size:10px;color:rgba(255,255,255,.65)">NewJeans</div>
+              </div>
+            </div>
+          </div>
+          <div class="badge del-b">−</div>
+          <div class="badge cust-b"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></div>
+        </div>
+
+        <!-- Pomodoro 1×1 jiggle -->
+        <div class="w jig" style="grid-row:3;grid-column:9">
+          <div class="card" style="background:linear-gradient(160deg,#7a2e08,#3a1604)">
+            <div class="cnt">
+              <div class="t">Focus</div>
+              <div style="font-weight:700;font-size:20px;margin-top:5px">25:00</div>
+              <div style="font-size:9px;color:rgba(255,255,255,.7);margin-top:auto">Pomodoro</div>
+            </div>
+          </div>
+          <div class="badge del-b">−</div>
+          <div class="badge cust-b"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></div>
+        </div>
+
+        <!-- Battery 1×1 jiggle -->
+        <div class="w jig" style="grid-row:3;grid-column:10">
+          <div class="card" style="background:linear-gradient(160deg,#0f3a2a,#0a2419)">
+            <div class="cnt" style="align-items:center;justify-content:center">
+              <svg viewBox="0 0 64 64" style="width:52px;height:52px">
+                <circle cx="32" cy="32" r="26" fill="none" stroke="rgba(48,209,88,.2)" stroke-width="6"/>
+                <circle cx="32" cy="32" r="26" fill="none" stroke="#30d158" stroke-width="6" stroke-linecap="round"
+                  stroke-dasharray="163" stroke-dashoffset="26" transform="rotate(-90 32 32)"/>
+                <text x="32" y="37" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">84%</text>
+              </svg>
+            </div>
+          </div>
+          <div class="badge del-b">−</div>
+          <div class="badge cust-b"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Customization popover floating -->
+    <div class="pop" style="position:fixed;left:740px;top:120px">
+      <h4>Size</h4>
+      <div class="szs">
+        <div class="sz">1×1</div>
+        <div class="sz">2×1</div>
+        <div class="sz on">2×2</div>
+        <div class="sz">2×4</div>
+      </div>
+      <h4>Accent Color</h4>
+      <div class="sws">
+        <i style="background:#0a84ff" class="on"></i>
+        <i style="background:#30d158"></i>
+        <i style="background:#ff9f0a"></i>
+        <i style="background:#ff453a"></i>
+        <i style="background:#bf5af2"></i>
+        <i style="background:#ff2d9b"></i>
+      </div>
+      <div class="src">Data Source<br><b style="color:rgba(255,255,255,.6)">Google Calendar API</b></div>
+    </div>
+
+  </div>
+
+  <div class="caption">
+    <span style="background:linear-gradient(90deg,#fff 60%,rgba(255,255,255,.55));-webkit-background-clip:text;-webkit-text-fill-color:transparent">
+      Long-press to enter <span style="-webkit-text-fill-color:var(--orange)">Edit Mode</span> · Drag freely · Resize from corners
+    </span>
+  </div>
+</div>
+
+<script>
+const pad = n => String(n).padStart(2,'0');
+function tick(){
+  const now = new Date();
+  const h = now.getHours(), m = now.getMinutes(), s = now.getSeconds();
+  const set = (id, deg) => { const el = document.getElementById(id); if(el) el.setAttribute('transform',`rotate(${deg} 50 50)`); };
+  set('hh3',(h%12+m/60)*30); set('mh3',(m+s/60)*6); set('sh3',s*6);
+}
+tick(); setInterval(tick,1000);
+</script>
+</body>
+</html>

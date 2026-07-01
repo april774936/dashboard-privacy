@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1280">
+<title>Promo 5 — Customize</title>
+<style>
+:root{
+  --blue:#0a84ff;--green:#30d158;--orange:#ff9f0a;--red:#ff453a;--purple:#bf5af2;--pink:#ff2d9b;--teal:#5ac8e8;
+  --txt:#fff;--t2:rgba(255,255,255,.6);--t3:rgba(255,255,255,.34);--brd:rgba(255,255,255,.14);
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",system-ui,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased}
+html,body{width:1280px;height:800px;overflow:hidden;font-family:var(--font);color:var(--txt)}
+body{background:
+  radial-gradient(900px 700px at 75% -5%,rgba(191,90,242,.4),transparent 55%),
+  radial-gradient(700px 600px at -5% 75%,rgba(40,98,235,.4),transparent 55%),
+  radial-gradient(600px 500px at 60% 110%,rgba(255,45,155,.2),transparent 55%),
+  #0a0e1c}
+
+.frame{position:absolute;inset:0;display:flex;flex-direction:column}
+.chrome-bar{height:44px;background:rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.1);
+  display:flex;align-items:center;padding:0 16px;gap:10px;flex:none}
+.dots{display:flex;gap:7px}.dot{width:12px;height:12px;border-radius:50%}
+.urlbar{flex:1;max-width:460px;margin:0 auto;height:28px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.12);
+  border-radius:8px;display:flex;align-items:center;padding:0 12px;font-size:12px;color:var(--t2)}
+
+.dash{flex:1;display:flex;overflow:hidden;gap:0}
+
+/* Left: settings panel */
+.settings-panel{width:320px;flex:none;border-right:1px solid rgba(255,255,255,.08);
+  background:rgba(15,17,26,.9);backdrop-filter:blur(30px);
+  display:flex;flex-direction:column;padding:24px 20px}
+.sp-title{font-size:20px;font-weight:800;margin-bottom:20px;letter-spacing:-.4px}
+.sp-section{margin-bottom:20px}
+.sp-section-label{font-size:10px;font-weight:700;color:var(--t2);letter-spacing:.5px;margin-bottom:10px;text-transform:uppercase}
+.sp-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+.sp-row:last-child{border-bottom:none}
+.sp-row-left{display:flex;flex-direction:column;gap:2px}
+.sp-label{font-size:13px;font-weight:600}
+.sp-desc{font-size:11px;color:var(--t2)}
+/* toggle */
+.toggle{width:44px;height:26px;background:var(--blue);border-radius:999px;position:relative;flex:none}
+.toggle.off{background:rgba(255,255,255,.2)}
+.toggle::after{content:"";position:absolute;width:22px;height:22px;border-radius:50%;background:#fff;
+  top:2px;right:2px;box-shadow:0 2px 6px rgba(0,0,0,.3);transition:.2s}
+.toggle.off::after{right:auto;left:2px}
+/* theme selector */
+.theme-row{display:flex;gap:8px;margin-top:8px}
+.theme-chip{padding:7px 14px;border-radius:999px;font-size:11px;font-weight:600;border:1px solid var(--brd);background:rgba(255,255,255,.07);color:var(--t2)}
+.theme-chip.on{background:var(--blue);border-color:transparent;color:#fff}
+/* wallpaper picker */
+.wp-row{display:flex;gap:8px;margin-top:8px}
+.wp-thumb{width:44px;height:32px;border-radius:8px;border:2px solid transparent;overflow:hidden}
+.wp-thumb.on{border-color:#fff}
+.wp-thumb div{width:100%;height:100%}
+/* accent colors */
+.acc-row{display:flex;gap:8px;margin-top:8px}
+.acc-dot{width:24px;height:24px;border-radius:50%;border:2px solid transparent}
+.acc-dot.on{border-color:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.3)}
+/* export/import */
+.export-btn{width:100%;padding:10px;border-radius:12px;background:rgba(255,255,255,.08);border:1px solid var(--brd);
+  font-family:inherit;font-size:13px;font-weight:600;color:#fff;text-align:center;margin-top:6px;display:block}
+.export-btn:first-child{background:var(--blue);border-color:transparent}
+
+/* Right: dashboard preview */
+.dash-preview{flex:1;display:flex;flex-direction:column;overflow:hidden;position:relative}
+.preview-label{padding:12px 20px 6px;font-size:11px;font-weight:600;color:var(--t2);letter-spacing:.4px}
+.grid-wrap{flex:1;display:flex;justify-content:center;align-items:flex-start;padding:4px 20px 16px;overflow:hidden}
+.grid{display:grid;grid-template-columns:repeat(7,96px);grid-auto-rows:96px;gap:12px}
+
+.w{position:relative;border-radius:21px}
+.card{position:absolute;inset:0;border-radius:21px;overflow:hidden;padding:13px}
+.glass .card{background:linear-gradient(160deg,rgba(255,255,255,.12),rgba(255,255,255,.042));
+  border:1px solid var(--brd);box-shadow:0 11px 28px rgba(0,0,0,.36),inset 0 1px 0 rgba(255,255,255,.22);
+  backdrop-filter:blur(26px)}
+.cnt{height:100%;display:flex;flex-direction:column;min-height:0;position:relative;z-index:1}
+.w2{grid-column:span 2}.h2{grid-row:span 2}.w3{grid-column:span 3}.w4{grid-column:span 4}
+.t{font-size:10px;font-weight:600;color:var(--t2)}.hn{font-size:12px;font-weight:700}
+.hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:3px}
+.ev{display:flex;gap:8px;margin-top:8px}.ev .bar{width:3px;border-radius:2px;align-self:stretch}
+.ev .et{font-size:9px;color:var(--t2)}.ev .en{font-size:12px;font-weight:600;margin-top:1px}
+.tk{display:flex;align-items:center;gap:8px;margin-top:6px;font-size:11px}
+.tk .cb{width:15px;height:15px;border-radius:5px;border:1.5px solid rgba(255,255,255,.4);flex:none;position:relative}
+.tk.dn .cb{background:var(--purple);border-color:transparent}
+.tk.dn .cb::after{content:"";position:absolute;left:4px;top:2px;width:4px;height:7px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
+.tk.dn span{color:var(--t3);text-decoration:line-through}
+.ic-tile{display:flex;flex-direction:column;align-items:center;gap:4px}
+.ic-sq{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;color:#fff}
+.ic-lb{font-size:8px;color:var(--t2)}
+
+/* caption */
+.caption{position:absolute;bottom:0;left:0;right:0;height:56px;
+  background:linear-gradient(0deg,rgba(10,14,28,.98) 40%,transparent);
+  display:flex;align-items:flex-end;justify-content:center;padding-bottom:12px;
+  font-size:19px;font-weight:700;letter-spacing:-.3px}
+</style>
+</head>
+<body>
+<div class="frame">
+  <div class="chrome-bar">
+    <div class="dots">
+      <div class="dot" style="background:#ff5f57"></div>
+      <div class="dot" style="background:#febc2e"></div>
+      <div class="dot" style="background:#28c840"></div>
+    </div>
+    <div class="urlbar">🔒 &nbsp;New Tab — Settings</div>
+  </div>
+
+  <div class="dash">
+    <!-- Settings Panel -->
+    <div class="settings-panel">
+      <div class="sp-title">⚙️ Settings</div>
+
+      <div class="sp-section">
+        <div class="sp-section-label">Theme</div>
+        <div class="theme-row">
+          <div class="theme-chip">Light</div>
+          <div class="theme-chip on">Dark</div>
+          <div class="theme-chip">Auto</div>
+        </div>
+      </div>
+
+      <div class="sp-section">
+        <div class="sp-section-label">Wallpaper</div>
+        <div class="wp-row">
+          <div class="wp-thumb on"><div style="background:radial-gradient(at 80% -10%,rgba(40,98,235,.55),transparent 55%),radial-gradient(at -10% 80%,rgba(120,56,235,.5),transparent 55%),#0a0e1c"></div></div>
+          <div class="wp-thumb"><div style="background:radial-gradient(at 50% 0%,#1a3a6e,transparent 60%),#0d1421"></div></div>
+          <div class="wp-thumb"><div style="background:linear-gradient(135deg,#1a0a2e,#3a0a1a)"></div></div>
+          <div class="wp-thumb"><div style="background:linear-gradient(135deg,#0a1a1a,#0a2e1a)"></div></div>
+          <div class="wp-thumb" style="background:rgba(255,255,255,.06);border:1px solid var(--brd);display:flex;align-items:center;justify-content:center;font-size:14px">+</div>
+        </div>
+        <div style="margin-top:10px">
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--t2);margin-bottom:4px"><span>Dim</span><span>35%</span></div>
+          <div style="height:4px;border-radius:2px;background:rgba(255,255,255,.2);position:relative">
+            <div style="width:35%;height:100%;border-radius:2px;background:#fff;position:absolute"></div>
+            <div style="width:14px;height:14px;border-radius:50%;background:#fff;position:absolute;left:calc(35% - 7px);top:-5px;box-shadow:0 2px 6px rgba(0,0,0,.4)"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sp-section">
+        <div class="sp-section-label">Accent Color</div>
+        <div class="acc-row">
+          <div class="acc-dot" style="background:#0a84ff"></div>
+          <div class="acc-dot on" style="background:#bf5af2"></div>
+          <div class="acc-dot" style="background:#30d158"></div>
+          <div class="acc-dot" style="background:#ff9f0a"></div>
+          <div class="acc-dot" style="background:#ff453a"></div>
+          <div class="acc-dot" style="background:#ff2d9b"></div>
+          <div class="acc-dot" style="background:#5ac8e8"></div>
+        </div>
+      </div>
+
+      <div class="sp-section">
+        <div class="sp-section-label">Integrations</div>
+        <div class="sp-row">
+          <div class="sp-row-left">
+            <div class="sp-label">Google Calendar</div>
+            <div class="sp-desc">Connected · april774936@gmail.com</div>
+          </div>
+          <div class="toggle"></div>
+        </div>
+        <div class="sp-row">
+          <div class="sp-row-left">
+            <div class="sp-label">Google Tasks</div>
+            <div class="sp-desc">Connected</div>
+          </div>
+          <div class="toggle"></div>
+        </div>
+        <div class="sp-row">
+          <div class="sp-row-left">
+            <div class="sp-label">Notes · Drive Sync</div>
+            <div class="sp-desc">Edit from iPhone too</div>
+          </div>
+          <div class="toggle"></div>
+        </div>
+      </div>
+
+      <div class="sp-section">
+        <div class="sp-section-label">Data</div>
+        <a class="export-btn">Export settings (JSON)</a>
+        <a class="export-btn" style="margin-top:6px;background:rgba(255,255,255,.08)">Import settings</a>
+      </div>
+    </div>
+
+    <!-- Right preview -->
+    <div class="dash-preview">
+      <div class="preview-label">Preview — Purple theme applied</div>
+
+      <div class="grid-wrap">
+        <div class="grid">
+
+          <!-- 아날로그 Clock 2×2 - purple accent -->
+          <div class="w glass w2 h2">
+            <div class="card">
+              <div class="cnt" style="align-items:center;justify-content:center">
+                <svg viewBox="0 0 100 100" style="width:114px;height:114px">
+                  <defs><radialGradient id="cf4" cx="50%" cy="36%" r="66%"><stop offset="0%" stop-color="#1c1a34"/><stop offset="100%" stop-color="#0c0a19"/></radialGradient></defs>
+                  <circle cx="50" cy="50" r="47" fill="url(#cf4)" stroke="rgba(191,90,242,.3)"/>
+                  <rect id="hh4" x="48.4" y="29" width="3.2" height="23" rx="1.6" fill="#fff"/>
+                  <rect id="mh4" x="48.8" y="17" width="2.4" height="35" rx="1.2" fill="#fff"/>
+                  <rect id="sh4" x="49.4" y="14" width="1.2" height="41" rx=".6" fill="#bf5af2"/>
+                  <circle cx="50" cy="50" r="3" fill="#fff"/><circle cx="50" cy="50" r="1.6" fill="#bf5af2"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Weather 2×2 - teal -->
+          <div class="w w2 h2">
+            <div class="card" style="background:linear-gradient(160deg,#0f4a6a,#082a44)">
+              <div class="cnt">
+                <div class="t">San Francisco</div>
+                <div style="font-weight:700;font-size:44px;letter-spacing:-1px;line-height:1.05">21°</div>
+                <div style="font-size:11px;font-weight:600">Sunny</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Calendar 2×2 - purple accent -->
+          <div class="w glass w2 h2">
+            <div class="card">
+              <div class="cnt">
+                <div class="hdr"><span class="hn">Calendar</span><span style="color:var(--purple);font-size:10px;font-weight:600">+ Event</span></div>
+                <div class="ev"><div class="bar" style="background:var(--purple)"></div><div><div class="et">09:00</div><div class="en">Team Standup</div></div></div>
+                <div class="ev"><div class="bar" style="background:var(--teal)"></div><div><div class="et">13:00</div><div class="en">Study Session</div></div></div>
+                <div class="ev"><div class="bar" style="background:var(--pink)"></div><div><div class="et">18:30</div><div class="en">Gym · PT</div></div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tasks 2×2 - purple accent -->
+          <div class="w glass w2 h2">
+            <div class="card">
+              <div class="cnt">
+                <div class="hdr"><span class="hn">Tasks</span></div>
+                <div class="tk dn"><div class="cb"></div><span>Review PR #142</span></div>
+                <div class="tk dn"><div class="cb"></div><span>Deploy to staging</span></div>
+                <div class="tk"><div class="cb"></div><span>Write release notes</span></div>
+                <div class="tk"><div class="cb"></div><span>Update API docs</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Search 3×1 -->
+          <div class="w glass w3">
+            <div class="card">
+              <div class="cnt" style="justify-content:center">
+                <div style="display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.08);border:1px solid var(--brd);border-radius:11px;padding:0 12px;height:38px;color:var(--t2);font-size:12px">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-width="2" width="14" height="14"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+                  Search Google or type a URL
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 바로가기 2×2 -->
+          <div class="w glass w2 h2">
+            <div class="card">
+              <div class="cnt">
+                <div class="hdr"><span class="hn">Shortcuts</span></div>
+                <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;flex:1">
+                  <div class="ic-tile"><div class="ic-sq" style="background:#4285f4">G</div><div class="ic-lb">Google</div></div>
+                  <div class="ic-tile"><div class="ic-sq" style="background:#ff0000">Y</div><div class="ic-lb">YouTube</div></div>
+                  <div class="ic-tile"><div class="ic-sq" style="background:#ea4335">M</div><div class="ic-lb">Gmail</div></div>
+                  <div class="ic-tile"><div class="ic-sq" style="background:#111">N</div><div class="ic-lb">Notion</div></div>
+                  <div class="ic-tile"><div class="ic-sq" style="background:#2b3137">Gh</div><div class="ic-lb">GitHub</div></div>
+                  <div class="ic-tile"><div class="ic-sq" style="background:#1fa463">D</div><div class="ic-lb">Drive</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- D-Day 2×1 -->
+          <div class="w w2">
+            <div class="card" style="background:linear-gradient(160deg,#2a1050,#18093a)">
+              <div class="cnt" style="flex-direction:row;height:100%;align-items:center;justify-content:space-between">
+                <div>
+                  <div class="t" style="color:rgba(191,90,242,.8)">Product Launch</div>
+                  <div style="font-weight:700;font-size:30px;letter-spacing:-1px">D-84</div>
+                </div>
+                <div style="font-size:11px;color:rgba(255,255,255,.6)">Jul 22</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="caption">
+        <span style="background:linear-gradient(90deg,#fff 60%,rgba(255,255,255,.55));-webkit-background-clip:text;-webkit-text-fill-color:transparent">
+          Theme · Colors · Wallpaper — <span style="-webkit-text-fill-color:var(--purple)">fully Customize</span>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const pad = n => String(n).padStart(2,'0');
+function tick(){
+  const now = new Date();
+  const h = now.getHours(), m = now.getMinutes(), s = now.getSeconds();
+  const set = (id, deg) => { const el = document.getElementById(id); if(el) el.setAttribute('transform',`rotate(${deg} 50 50)`); };
+  set('hh4',(h%12+m/60)*30); set('mh4',(m+s/60)*6); set('sh4',s*6);
+}
+tick(); setInterval(tick,1000);
+</script>
+</body>
+</html>

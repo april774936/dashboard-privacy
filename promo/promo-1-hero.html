@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1280">
+<title>Promo 1 — Hero</title>
+<style>
+:root{
+  --blue:#0a84ff;--green:#30d158;--orange:#ff9f0a;--red:#ff453a;--purple:#bf5af2;--teal:#5ac8e8;
+  --txt:#fff;--t2:rgba(255,255,255,.6);--t3:rgba(255,255,255,.34);--brd:rgba(255,255,255,.14);
+  --cell:90px;--gap:12px;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",system-ui,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased}
+html,body{width:1280px;height:800px;overflow:hidden;font-family:var(--font);color:var(--txt)}
+body{background:
+  radial-gradient(1000px 760px at 80% -10%,rgba(40,98,235,.55),transparent 58%),
+  radial-gradient(1000px 880px at -12% 78%,rgba(120,56,235,.5),transparent 58%),
+  radial-gradient(760px 680px at 62% 100%,rgba(20,190,200,.28),transparent 58%),
+  radial-gradient(560px 560px at 16% -4%,rgba(240,80,158,.22),transparent 58%),#0a0e1c}
+
+/* chrome browser frame */
+.frame{position:absolute;inset:0;display:flex;flex-direction:column}
+.chrome-bar{height:44px;background:rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.1);
+  display:flex;align-items:center;padding:0 16px;gap:10px;flex:none;backdrop-filter:blur(20px)}
+.dots{display:flex;gap:7px}.dot{width:12px;height:12px;border-radius:50%}
+.urlbar{flex:1;max-width:460px;margin:0 auto;height:28px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.12);
+  border-radius:8px;display:flex;align-items:center;padding:0 12px;font-size:12px;color:var(--t2)}
+
+/* dashboard */
+.dash{flex:1;overflow:hidden;position:relative;display:flex;flex-direction:column}
+.top-bar{padding:22px 32px 8px;display:flex;align-items:flex-end;justify-content:space-between}
+.hi{font-size:22px;font-weight:700;letter-spacing:-.4px}.hi small{display:block;font-size:12px;font-weight:500;color:var(--t2);margin-top:3px}
+.tools{display:flex;gap:10px}
+.tbtn{font-family:inherit;font-size:12px;font-weight:600;color:#fff;border:1px solid var(--brd);background:rgba(255,255,255,.08);
+  padding:8px 14px;border-radius:999px;backdrop-filter:blur(20px)}
+.tbtn.primary{background:var(--blue);border-color:transparent}
+
+.grid-wrap{flex:1;display:flex;justify-content:center;align-items:flex-start;padding:8px 20px 16px;overflow:hidden}
+.grid{display:grid;grid-template-columns:repeat(10,var(--cell));grid-auto-rows:var(--cell);gap:var(--gap)}
+
+/* widget base */
+.w{position:relative;border-radius:22px}
+.card{position:absolute;inset:0;border-radius:22px;overflow:hidden;padding:13px}
+.glass .card{background:linear-gradient(160deg,rgba(255,255,255,.12),rgba(255,255,255,.042));
+  border:1px solid var(--brd);box-shadow:0 12px 30px rgba(0,0,0,.36),inset 0 1px 0 rgba(255,255,255,.22);
+  backdrop-filter:blur(26px) saturate(1.3)}
+.cnt{height:100%;display:flex;flex-direction:column;min-height:0;position:relative;z-index:1}
+.w2{grid-column:span 2}.h2{grid-row:span 2}.w3{grid-column:span 3}.h3{grid-row:span 3}
+.w4{grid-column:span 4}.h4{grid-row:span 4}.w5{grid-column:span 5}
+.t{font-size:11px;font-weight:600;color:var(--t2)}.hn{font-size:13px;font-weight:700}
+.dig{font-weight:700;letter-spacing:-1.2px}.tnum{font-variant-numeric:tabular-nums}
+.hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+.acc{font-size:11px;font-weight:600;color:var(--blue)}
+.row{display:flex;align-items:center}.col{display:flex;flex-direction:column}
+.fill{flex:1}.cen{align-items:center;justify-content:center;text-align:center}
+.ev{display:flex;gap:9px;margin-top:9px}.ev .bar{width:4px;border-radius:2px;align-self:stretch}
+.ev .et{font-size:10px;color:var(--t2)}.ev .en{font-size:13px;font-weight:600;margin-top:1px}
+.tk{display:flex;align-items:center;gap:10px;margin-top:8px;font-size:12.5px}
+.tk .cb{width:18px;height:18px;border-radius:6px;border:1.5px solid rgba(255,255,255,.4);flex:none;position:relative}
+.tk.dn .cb{background:var(--blue);border-color:transparent}
+.tk.dn .cb::after{content:"";position:absolute;left:5.5px;top:2.5px;width:5px;height:8px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
+.tk.dn span{color:var(--t3);text-decoration:line-through}
+.pbar{height:3px;border-radius:2px;background:rgba(255,255,255,.2);position:relative;overflow:hidden}
+.pbar i{position:absolute;left:0;top:0;bottom:0;border-radius:2px;background:#fff}
+.m-art{border-radius:11px;background:linear-gradient(135deg,#7b2ff0,#ff2d9b);flex:none;box-shadow:0 6px 14px rgba(123,47,240,.45)}
+.tp{display:flex;align-items:center;justify-content:center;gap:20px}
+.pbtn{width:40px;height:40px;border-radius:50%;background:#fff;color:#141414;display:flex;align-items:center;justify-content:center}
+.ic-tile{display:flex;flex-direction:column;align-items:center;gap:4px}
+.ic-sq{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;color:#fff}
+.ic-lb{font-size:9px;color:var(--t2)}
+.icons-grid{display:grid;gap:8px;flex:1}
+
+/* badge — promo tag */
+.promo-badge{position:absolute;bottom:-14px;left:50%;transform:translateX(-50%);white-space:nowrap;
+  background:rgba(10,132,255,.9);border:1px solid rgba(255,255,255,.3);backdrop-filter:blur(20px);
+  font-size:11px;font-weight:700;color:#fff;padding:4px 12px;border-radius:999px;
+  box-shadow:0 4px 16px rgba(10,132,255,.5);z-index:50;letter-spacing:.2px}
+
+/* bottom caption bar */
+.caption{position:absolute;bottom:0;left:0;right:0;height:72px;
+  background:linear-gradient(0deg,rgba(10,14,28,.98) 40%,transparent);
+  display:flex;align-items:flex-end;justify-content:center;padding-bottom:18px;
+  font-size:22px;font-weight:700;letter-spacing:-.4px;
+  text-shadow:0 2px 20px rgba(10,132,255,.6)}
+.caption span{background:linear-gradient(90deg,#fff 60%,rgba(255,255,255,.55));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.caption em{font-style:normal;color:var(--blue);-webkit-text-fill-color:var(--blue)}
+</style>
+</head>
+<body>
+<div class="frame">
+  <div class="chrome-bar">
+    <div class="dots">
+      <div class="dot" style="background:#ff5f57"></div>
+      <div class="dot" style="background:#febc2e"></div>
+      <div class="dot" style="background:#28c840"></div>
+    </div>
+    <div class="urlbar">🔒 &nbsp;New Tab — Navi Dashboard</div>
+  </div>
+
+  <div class="dash">
+    <div class="top-bar">
+      <div class="hi">Good afternoon, Alex <small>Wednesday, July 1, 2026</small></div>
+      <div class="tools">
+        <button class="tbtn">Edit</button>
+        <button class="tbtn primary">+ Widget</button>
+      </div>
+    </div>
+
+    <div class="grid-wrap">
+      <div class="grid">
+
+        <!-- 아날로그 Clock 2×2 -->
+        <div class="w glass w2 h2">
+          <div class="card">
+            <div class="cnt cen" style="flex-direction:column">
+              <svg viewBox="0 0 100 100" style="width:120px;height:120px">
+                <defs><radialGradient id="cf" cx="50%" cy="36%" r="66%"><stop offset="0%" stop-color="#1c2334"/><stop offset="100%" stop-color="#0c1019"/></radialGradient></defs>
+                <circle cx="50" cy="50" r="47" fill="url(#cf)" stroke="rgba(255,255,255,.16)"/>
+                <g id="ticks"></g>
+                <text x="50" y="20" text-anchor="middle" fill="rgba(255,255,255,.5)" font-size="7" font-weight="600">12</text>
+                <text x="83" y="53" text-anchor="middle" fill="rgba(255,255,255,.38)" font-size="6">3</text>
+                <text x="50" y="87" text-anchor="middle" fill="rgba(255,255,255,.38)" font-size="6">6</text>
+                <text x="17" y="53" text-anchor="middle" fill="rgba(255,255,255,.38)" font-size="6">9</text>
+                <rect id="hh" x="48.4" y="29" width="3.2" height="23" rx="1.6" fill="#fff"/>
+                <rect id="mh" x="48.8" y="17" width="2.4" height="35" rx="1.2" fill="#fff"/>
+                <rect id="sh" x="49.4" y="14" width="1.2" height="41" rx=".6" fill="#ff453a"/>
+                <circle cx="50" cy="50" r="3" fill="#fff"/>
+                <circle cx="50" cy="50" r="1.6" fill="#ff453a"/>
+              </svg>
+              <div style="font-size:12px;color:var(--t2);margin-top:6px">New York · <span id="digi" style="color:#fff;font-weight:600"></span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Weather 2×2 -->
+        <div class="w w2 h2" style="position:relative">
+          <div class="card" style="background:linear-gradient(160deg,#1f86ff,#0a5fe0)">
+            <div class="cnt">
+              <div class="row" style="justify-content:space-between">
+                <div>
+                  <div class="t">San Francisco</div>
+                  <div class="dig tnum" style="font-size:46px;line-height:1">68°</div>
+                </div>
+                <svg width="44" height="44" viewBox="0 0 24 24" fill="none">
+                  <circle cx="9" cy="9" r="3.6" fill="#ffd60a"/>
+                  <g stroke="#ffe680" stroke-width="1.4" stroke-linecap="round">
+                    <path d="M9 2v1.6M9 14.4V16M2 9h1.6M14.4 9H16M4 4l1.1 1.1M12.9 12.9 14 14M14 4l-1.1 1.1M5.1 12.9 4 14"/>
+                  </g>
+                </svg>
+              </div>
+              <div style="font-size:12px;font-weight:600;margin-top:2px">Sunny · Feels like 65°</div>
+              <div class="fill"></div>
+              <div style="display:flex;justify-content:space-between;gap:4px">
+                <div style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px">
+                  <b>Now</b>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="9" r="3.6" fill="#ffd60a"/></svg>
+                  <b>68°</b>
+                </div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px">
+                  <b>3PM</b>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="9" r="3.6" fill="#ffd60a"/></svg>
+                  <b>23°</b>
+                </div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px">
+                  <b>4PM</b>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="9" r="3.6" fill="#ffd60a"/></svg>
+                  <b>24°</b>
+                </div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px">
+                  <b>5PM</b>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M7 18a4 4 0 0 1-.5-7.97 5 5 0 0 1 9.6-1.2A4.2 4.2 0 0 1 18 18z" fill="rgba(255,255,255,.85)"/></svg>
+                  <b>20°</b>
+                </div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px">
+                  <b>6PM</b>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M7 18a4 4 0 0 1-.5-7.97 5 5 0 0 1 9.6-1.2A4.2 4.2 0 0 1 18 18z" fill="rgba(255,255,255,.85)"/></svg>
+                  <b>19°</b>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Calendar 2×2 -->
+        <div class="w glass w2 h2">
+          <div class="card">
+            <div class="cnt">
+              <div class="hdr"><span class="hn">Calendar</span><span class="acc">+ Event</span></div>
+              <div class="ev"><div class="bar" style="background:var(--blue)"></div><div><div class="et">09:00</div><div class="en">Team Standup</div></div></div>
+              <div class="ev"><div class="bar" style="background:var(--green)"></div><div><div class="et">13:00</div><div class="en">Study Session</div></div></div>
+              <div class="ev"><div class="bar" style="background:var(--orange)"></div><div><div class="et">18:30</div><div class="en">Gym · PT</div></div></div>
+              <div class="ev"><div class="bar" style="background:var(--purple)"></div><div><div class="et">21:00</div><div class="en">ChartSignal Review</div></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stocks 2×2 -->
+        <div class="w w2 h2">
+          <div class="card" style="background:linear-gradient(160deg,#0e2118,#08130d)">
+            <div class="cnt">
+              <div class="hdr"><span class="hn">ChartSignal</span><span style="font-size:10px;color:rgba(255,255,255,.5)">Watchlist</span></div>
+              <div class="row" style="justify-content:space-between;margin-top:10px"><div style="font-size:12px;font-weight:600">AAPL</div><div style="color:var(--green);font-weight:600;font-size:12px">+1.2%</div></div>
+              <div class="row" style="justify-content:space-between;margin-top:9px"><div style="font-size:12px;font-weight:600">TSLA</div><div style="color:var(--red);font-weight:600;font-size:12px">-0.8%</div></div>
+              <div class="row" style="justify-content:space-between;margin-top:9px"><div style="font-size:12px;font-weight:600">TSLA</div><div style="color:var(--green);font-weight:600;font-size:12px">+0.6%</div></div>
+              <div class="fill"></div>
+              <svg width="100%" height="36" viewBox="0 0 56 44" preserveAspectRatio="none"><path d="M 2 42 9 35 7 37 15 29 12 31 8 25 17 19 21 23 23 12 14 17 30 11 27 14 36 7 23 10 42 1 33 6 48 3 29 8 54 6" fill="none" stroke="#30d158" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tasks 2×2 -->
+        <div class="w glass w2 h2">
+          <div class="card">
+            <div class="cnt">
+              <div class="hdr"><span class="hn">Tasks</span><span style="font-size:10px;color:var(--t2)">Today</span></div>
+              <div class="tk dn"><div class="cb"></div><span>Review PR #142</span></div>
+              <div class="tk dn"><div class="cb"></div><span>Deploy to staging</span></div>
+              <div class="tk"><div class="cb"></div><span>Write release notes</span></div>
+              <div class="tk"><div class="cb"></div><span>Update API docs</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Media 2×1 -->
+        <div class="w w2">
+          <div class="card" style="background:linear-gradient(160deg,#33124a,#1c0c2c)">
+            <div class="cnt row" style="gap:12px">
+              <div class="m-art" style="width:44px;height:44px"></div>
+              <div class="col fill">
+                <div style="font-weight:700;font-size:14px">Ditto</div>
+                <div style="font-size:11px;color:rgba(255,255,255,.65)">NewJeans</div>
+              </div>
+              <div class="pbtn" style="width:38px;height:38px">
+                <svg viewBox="0 0 24 24" fill="#141414" width="18" height="18"><path d="M8 5v14l11-7z"/></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Search 4×1 -->
+        <div class="w w4">
+          <div class="card glass">
+            <div class="cnt" style="justify-content:center">
+              <div style="display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.08);border:1px solid var(--brd);border-radius:12px;padding:0 14px;height:40px;color:var(--t2);font-size:13px">
+                <svg viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" width="16" height="16"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+                Search Google or type a URL
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- D-Day 2×1 -->
+        <div class="w w2">
+          <div class="card" style="background:linear-gradient(160deg,#3a1f5c,#221038)">
+            <div class="cnt row" style="height:100%;justify-content:space-between;align-items:center">
+              <div>
+                <div class="t">Product Launch</div>
+                <div class="dig tnum" style="font-size:32px">D-84</div>
+              </div>
+              <div style="font-size:12px;color:rgba(255,255,255,.7)">Jul 22</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 바로가기 2×2 -->
+        <div class="w glass w2 h2">
+          <div class="card">
+            <div class="cnt">
+              <div class="hdr"><span class="hn">Shortcuts</span></div>
+              <div class="icons-grid" style="grid-template-columns:repeat(3,1fr);flex:1">
+                <div class="ic-tile"><div class="ic-sq" style="background:#4285f4">G</div><div class="ic-lb">Google</div></div>
+                <div class="ic-tile"><div class="ic-sq" style="background:#ff0000">Y</div><div class="ic-lb">YouTube</div></div>
+                <div class="ic-tile"><div class="ic-sq" style="background:#ea4335">M</div><div class="ic-lb">Gmail</div></div>
+                <div class="ic-tile"><div class="ic-sq" style="background:#111">N</div><div class="ic-lb">Notion</div></div>
+                <div class="ic-tile"><div class="ic-sq" style="background:#2b3137">Gh</div><div class="ic-lb">GitHub</div></div>
+                <div class="ic-tile"><div class="ic-sq" style="background:#1fa463">D</div><div class="ic-lb">Drive</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 메모 2×2 -->
+        <div class="w w2 h2">
+          <div class="card" style="background:linear-gradient(160deg,#3a3320,#241f12)">
+            <div class="cnt">
+              <div class="hdr"><span class="hn">Notes</span><span style="font-size:10px;color:var(--green)">• Drive</span></div>
+              <div style="font-size:12px;line-height:1.7;color:rgba(255,255,255,.92);margin-top:4px">
+                This week's goals<br>· Finish dashboard MVP<br>· Set up OAuth flow<br>· Write widget docs<br><br>Ideas<br>· Widget theme toggle
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 뉴스 2×2 -->
+        <div class="w glass w2 h2">
+          <div class="card">
+            <div class="cnt">
+              <div style="font-size:10px;font-weight:700;color:var(--blue);letter-spacing:.4px">Top Stories</div>
+              <div style="margin-top:8px">
+                <div style="font-size:14px;font-weight:600;line-height:1.32">Fed holds rates steady — markets rally</div>
+                <div style="font-size:10px;color:var(--t2);margin-top:5px">Reuters · Breaking · 12m ago</div>
+              </div>
+              <div style="border-top:1px solid rgba(255,255,255,.1);margin-top:10px;padding-top:9px">
+                <div style="font-size:14px;font-weight:600;line-height:1.32">Apple M5 chip announcement imminent</div>
+                <div style="font-size:10px;color:var(--t2);margin-top:5px">The Verge · Tech · 1h ago</div>
+              </div>
+              <div style="border-top:1px solid rgba(255,255,255,.1);margin-top:10px;padding-top:9px">
+                <div style="font-size:14px;font-weight:600;line-height:1.32">S&P 500 closes above 5,200</div>
+                <div style="font-size:10px;color:var(--t2);margin-top:5px">Bloomberg · Markets · 2h ago</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pomodoro 1×1 -->
+        <div class="w">
+          <div class="card" style="background:linear-gradient(160deg,#7a2e08,#3a1604)">
+            <div class="cnt">
+              <div class="t">Focus</div>
+              <div class="dig tnum" style="font-size:22px;margin-top:6px">25:00</div>
+              <div style="font-size:10px;color:rgba(255,255,255,.7);margin-top:auto">Pomodoro</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Battery 1×1 -->
+        <div class="w">
+          <div class="card" style="background:linear-gradient(160deg,#0f3a2a,#0a2419)">
+            <div class="cnt">
+              <div class="t">Battery</div>
+              <div style="flex:1;display:flex;align-items:center;justify-content:center">
+                <svg viewBox="0 0 64 64" style="width:50px;height:50px">
+                  <circle cx="32" cy="32" r="26" fill="none" stroke="rgba(48,209,88,.2)" stroke-width="6"/>
+                  <circle cx="32" cy="32" r="26" fill="none" stroke="#30d158" stroke-width="6" stroke-linecap="round"
+                    stroke-dasharray="163" stroke-dashoffset="26" transform="rotate(-90 32 32)"/>
+                  <text x="32" y="37" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">84%</text>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FX Rate 2×1 -->
+        <div class="w w2">
+          <div class="card" style="background:linear-gradient(160deg,#0f1b33,#0a1222)">
+            <div class="cnt row" style="height:100%;gap:14px">
+              <div class="col fill">
+                <span class="t">FX USD/EUR</span>
+                <span class="dig tnum" style="font-size:26px">₩1,371</span>
+                <span style="font-size:11px;color:var(--green);font-weight:600">+0.3% today</span>
+              </div>
+              <svg width="80" height="44" viewBox="0 0 56 44" preserveAspectRatio="none">
+                <path d="M 2 38 9 30 7 32 15 22 12 26 8 18 17 14 21 18 23 8 14 12 30 5 27 8 36 4 23 6 42 2 33 4 48 2 29 3 54 2" fill="none" stroke="#5ac8e8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- caption -->
+    <div class="caption">
+      <span>Turn every new tab into <em>your personal dashboard</em> — 30+ widgets, drag anywhere</span>
+    </div>
+  </div>
+</div>
+
+<script>
+// clock tick
+const pad = n => String(n).padStart(2,'0');
+function tick(){
+  const now = new Date();
+  const h = now.getHours(), m = now.getMinutes(), s = now.getSeconds();
+  const set = (id, deg) => {
+    const el = document.getElementById(id);
+    if(el) el.setAttribute('transform',`rotate(${deg} 50 50)`);
+  };
+  set('hh',(h%12+m/60)*30);
+  set('mh',(m+s/60)*6);
+  set('sh',s*6);
+  const d = document.getElementById('digi');
+  if(d){ const hh=h%12||12; d.textContent=pad(hh)+':'+pad(m)+':'+pad(s); }
+  // ticks
+  const tg = document.getElementById('ticks');
+  if(tg && !tg.children.length){
+    for(let i=0;i<60;i++){
+      const a=i*6*Math.PI/180,big=i%5===0,r1=big?40:42,r2=44;
+      const l=document.createElementNS('http://www.w3.org/2000/svg','line');
+      l.setAttribute('x1',50+r1*Math.sin(a)); l.setAttribute('y1',50-r1*Math.cos(a));
+      l.setAttribute('x2',50+r2*Math.sin(a)); l.setAttribute('y2',50-r2*Math.cos(a));
+      l.setAttribute('stroke',big?'rgba(255,255,255,.8)':'rgba(255,255,255,.3)');
+      l.setAttribute('stroke-width',big?1.4:.7); l.setAttribute('stroke-linecap','round');
+      tg.appendChild(l);
+    }
+  }
+}
+tick(); setInterval(tick,1000);
+</script>
+</body>
+</html>

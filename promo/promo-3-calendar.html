@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1280">
+<title>Promo 3 — Google Calendar & Tasks</title>
+<style>
+:root{
+  --blue:#0a84ff;--green:#30d158;--orange:#ff9f0a;--red:#ff453a;--purple:#bf5af2;
+  --txt:#fff;--t2:rgba(255,255,255,.6);--t3:rgba(255,255,255,.34);--brd:rgba(255,255,255,.14);
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",system-ui,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased}
+html,body{width:1280px;height:800px;overflow:hidden;font-family:var(--font);color:var(--txt)}
+body{background:
+  radial-gradient(1000px 800px at 100% 0%,rgba(10,132,255,.38),transparent 55%),
+  radial-gradient(800px 700px at -10% 90%,rgba(48,209,88,.2),transparent 55%),
+  radial-gradient(600px 600px at 50% 110%,rgba(120,56,235,.3),transparent 55%),
+  #0a0e1c}
+
+.frame{position:absolute;inset:0;display:flex;flex-direction:column}
+.chrome-bar{height:44px;background:rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.1);
+  display:flex;align-items:center;padding:0 16px;gap:10px;flex:none}
+.dots{display:flex;gap:7px}.dot{width:12px;height:12px;border-radius:50%}
+.urlbar{flex:1;max-width:460px;margin:0 auto;height:28px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.12);
+  border-radius:8px;display:flex;align-items:center;padding:0 12px;font-size:12px;color:var(--t2)}
+
+.dash{flex:1;display:flex;overflow:hidden;padding:28px 40px 20px;gap:28px}
+
+/* Left: feature callout */
+.left{width:340px;flex:none;display:flex;flex-direction:column;gap:16px;justify-content:center}
+.feat-title{font-size:32px;font-weight:800;letter-spacing:-.7px;line-height:1.22}
+.feat-sub{font-size:15px;color:var(--t2);line-height:1.6;margin-top:8px}
+.google-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);
+  padding:8px 16px;border-radius:12px;font-size:13px;font-weight:600;margin-top:8px}
+.bullet{display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--t2);line-height:1.5}
+.bullet::before{content:"✓";color:var(--green);font-weight:700;flex:none;margin-top:1px}
+.bullets{display:flex;flex-direction:column;gap:10px;margin-top:14px}
+
+/* Right: widget showcase */
+.right{flex:1;display:flex;gap:16px;align-items:flex-start;padding-top:10px}
+.col-group{display:flex;flex-direction:column;gap:14px}
+
+/* widgets */
+.w{border-radius:22px;position:relative;overflow:hidden}
+.glass{background:linear-gradient(160deg,rgba(255,255,255,.12),rgba(255,255,255,.042));
+  border:1px solid var(--brd);box-shadow:0 12px 30px rgba(0,0,0,.36),inset 0 1px 0 rgba(255,255,255,.22);
+  backdrop-filter:blur(26px)}
+.inner{padding:14px;height:100%;display:flex;flex-direction:column}
+.hn{font-size:13px;font-weight:700}
+.t{font-size:10px;font-weight:600;color:var(--t2)}
+.acc{font-size:11px;font-weight:600;color:var(--blue)}
+.hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+.ev{display:flex;gap:9px;margin-top:9px}.ev .bar{width:4px;border-radius:2px;align-self:stretch}
+.ev .et{font-size:10px;color:var(--t2)}.ev .en{font-size:13px;font-weight:600;margin-top:1px}
+.tk{display:flex;align-items:center;gap:10px;margin-top:8px;font-size:12.5px}
+.tk .cb{width:18px;height:18px;border-radius:6px;border:1.5px solid rgba(255,255,255,.4);flex:none;position:relative}
+.tk.dn .cb{background:var(--blue);border-color:transparent}
+.tk.dn .cb::after{content:"";position:absolute;left:5.5px;top:2.5px;width:5px;height:8px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
+.tk.dn span{color:var(--t3);text-decoration:line-through}
+/* calendar grid */
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;flex:1;align-content:center;margin-top:4px}
+.cd{display:flex;align-items:center;justify-content:center;font-size:11px;border-radius:50%;aspect-ratio:1}
+.cd.today{background:var(--blue);font-weight:700}
+.cd.event{position:relative}
+.cd.event::after{content:"";position:absolute;bottom:1px;left:50%;transform:translateX(-50%);width:4px;height:4px;border-radius:50%;background:var(--green)}
+
+/* add event sheet */
+.add-sheet{background:rgba(26,28,38,.96);border:1px solid var(--brd);border-radius:20px;
+  padding:16px;box-shadow:0 22px 54px rgba(0,0,0,.6);backdrop-filter:blur(30px)}
+.add-sheet h4{font-size:12px;font-weight:700;color:var(--t2);margin-bottom:10px}
+.add-field{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:11px;
+  padding:9px 12px;font-size:13px;color:#fff;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.add-field svg{flex:none;opacity:.6}
+.btn-row{display:flex;gap:8px;margin-top:4px}
+.btn{padding:8px 16px;border-radius:10px;font-size:12px;font-weight:700;border:none;cursor:pointer}
+.btn.cancel{background:rgba(255,255,255,.1);color:var(--t2)}
+.btn.add-btn{background:var(--blue);color:#fff;flex:1}
+
+/* time grid */
+.tg{position:relative;flex:1;overflow:hidden}
+.tg-line{position:absolute;left:28px;right:0;height:1px;background:rgba(255,255,255,.08)}
+.tg-lbl{position:absolute;left:0;font-size:9px;color:var(--t2);transform:translateY(-50%)}
+.tg-ev{position:absolute;left:32px;right:4px;border-radius:7px;padding:4px 7px;font-size:10.5px;font-weight:600;color:#fff}
+
+/* caption */
+.caption{position:absolute;bottom:0;left:0;right:0;height:56px;
+  background:linear-gradient(0deg,rgba(10,14,28,.98) 40%,transparent);
+  display:flex;align-items:flex-end;justify-content:center;padding-bottom:12px;
+  font-size:19px;font-weight:700;letter-spacing:-.3px}
+</style>
+</head>
+<body>
+<div class="frame">
+  <div class="chrome-bar">
+    <div class="dots">
+      <div class="dot" style="background:#ff5f57"></div>
+      <div class="dot" style="background:#febc2e"></div>
+      <div class="dot" style="background:#28c840"></div>
+    </div>
+    <div class="urlbar">🔒 &nbsp;New Tab — Navi Dashboard</div>
+  </div>
+
+  <div class="dash">
+    <!-- Left callout -->
+    <div class="left">
+      <div>
+        <div class="feat-title">Google Calendar &<br>Tasks Integration</div>
+        <div class="feat-sub">Check events, add tasks, stay on the dashboard — no tab-switching.</div>
+      </div>
+
+      <div class="google-badge">
+        <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285f4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34a853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#fbbc05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#ea4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        Google Calendar · Tasks sync
+      </div>
+
+      <div class="bullets">
+        <div class="bullet">Add events right from the dashboard</div>
+        <div class="bullet">Monthly, time-grid, and next-event views</div>
+        <div class="bullet">Google Tasks checklist</div>
+        <div class="bullet">Notes sync via Drive — edit on iPhone too</div>
+      </div>
+    </div>
+
+    <!-- Right widget grid -->
+    <div class="right">
+
+      <!-- 월간 Calendar 2×2 -->
+      <div class="col-group">
+        <div class="w glass" style="width:220px;height:210px">
+          <div class="inner">
+            <div class="hdr"><span class="hn">Jul</span><span style="font-size:11px;color:var(--t2)">2026</span></div>
+            <div style="display:grid;grid-template-columns:repeat(7,1fr);font-size:9px;text-align:center;margin:4px 0 2px;color:var(--t2)">
+              <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+            </div>
+            <div class="cal-grid">
+              <div class="cd" style="color:var(--t3)">28</div>
+              <div class="cd" style="color:var(--t3)">29</div>
+              <div class="cd" style="color:var(--t3)">30</div>
+              <div class="cd event">1</div>
+              <div class="cd">2</div>
+              <div class="cd event">3</div>
+              <div class="cd">4</div>
+              <div class="cd">5</div>
+              <div class="cd today">6</div>
+              <div class="cd event">7</div>
+              <div class="cd">8</div>
+              <div class="cd">9</div>
+              <div class="cd">10</div>
+              <div class="cd">11</div>
+              <div class="cd event">12</div>
+              <div class="cd">13</div>
+              <div class="cd">14</div>
+              <div class="cd event">15</div>
+              <div class="cd">16</div>
+              <div class="cd">17</div>
+              <div class="cd">18</div>
+              <div class="cd">19</div>
+              <div class="cd event">20</div>
+              <div class="cd">21</div>
+              <div class="cd">22</div>
+              <div class="cd">23</div>
+              <div class="cd event">24</div>
+              <div class="cd">25</div>
+              <div class="cd">26</div>
+              <div class="cd">27</div>
+              <div class="cd">28</div>
+              <div class="cd">29</div>
+              <div class="cd">30</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tasks 2×2 -->
+        <div class="w glass" style="width:220px;height:180px">
+          <div class="inner">
+            <div class="hdr"><span class="hn">Tasks</span>
+              <div style="display:flex;align-items:center;gap:6px">
+                <svg viewBox="0 0 64 64" style="width:28px;height:28px"><circle cx="32" cy="32" r="26" fill="none" stroke="rgba(10,132,255,.2)" stroke-width="6"/><circle cx="32" cy="32" r="26" fill="none" stroke="var(--blue)" stroke-width="6" stroke-linecap="round" stroke-dasharray="163" stroke-dashoffset="107" transform="rotate(-90 32 32)"/><text x="32" y="37" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">2/6</text></svg>
+              </div>
+            </div>
+            <div class="tk dn"><div class="cb"></div><span>Review PR #142</span></div>
+            <div class="tk dn"><div class="cb"></div><span>Deploy to staging</span></div>
+            <div class="tk"><div class="cb"></div><span>Write release notes</span></div>
+            <div class="tk"><div class="cb"></div><span>Update API docs</span></div>
+            <div class="tk"><div class="cb"></div><span>Note adapter</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Time Grid + Next Event -->
+      <div class="col-group">
+        <!-- Time Grid 2×4 -->
+        <div class="w glass" style="width:220px;height:360px">
+          <div class="inner">
+            <div class="hdr"><span class="hn">Today</span><span style="font-size:10px;color:var(--t2)">Time Grid</span></div>
+            <div class="tg" style="flex:1;margin-top:4px">
+              <div class="tg-line" style="top:0%"></div><div class="tg-lbl" style="top:0%">09</div>
+              <div class="tg-line" style="top:20%"></div><div class="tg-lbl" style="top:20%">11</div>
+              <div class="tg-line" style="top:40%"></div><div class="tg-lbl" style="top:40%">13</div>
+              <div class="tg-line" style="top:60%"></div><div class="tg-lbl" style="top:60%">15</div>
+              <div class="tg-line" style="top:80%"></div><div class="tg-lbl" style="top:80%">17</div>
+              <div class="tg-line" style="top:100%"></div><div class="tg-lbl" style="top:100%">19</div>
+              <div class="tg-ev" style="top:0%;height:10%;background:var(--blue)">Standup</div>
+              <div class="tg-ev" style="top:22%;height:15%;background:var(--green)">Study Session</div>
+              <div class="tg-ev" style="top:52%;height:10%;background:var(--orange)">Code Review</div>
+              <div class="tg-ev" style="top:75%;height:15%;background:var(--purple)">Gym · PT</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Event 카드 + 추가 시트 -->
+      <div class="col-group" style="gap:12px">
+        <!-- Next Event 2×1 -->
+        <div class="w glass" style="width:240px;height:90px">
+          <div class="inner" style="flex-direction:row;gap:12px">
+            <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:46px">
+              <div style="color:var(--red);font-size:10px;font-weight:700">Sat</div>
+              <div style="font-size:30px;font-weight:600;line-height:1">6</div>
+            </div>
+            <div style="border-left:1px solid rgba(255,255,255,.12);padding-left:12px;display:flex;flex-direction:column;justify-content:center">
+              <div class="t">Next Event</div>
+              <div style="font-size:15px;font-weight:600;margin-top:3px">Team Standup</div>
+              <div style="font-size:11px;color:var(--t2)">09:00 · Google Meet</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Event 목록 2×2 -->
+        <div class="w glass" style="width:240px;height:190px">
+          <div class="inner">
+            <div class="hdr"><span class="hn">Calendar</span><span class="acc">+ Event</span></div>
+            <div class="ev"><div class="bar" style="background:var(--blue)"></div><div><div class="et">09:00</div><div class="en">Team Standup</div></div></div>
+            <div class="ev"><div class="bar" style="background:var(--green)"></div><div><div class="et">13:00</div><div class="en">Study Session</div></div></div>
+            <div class="ev"><div class="bar" style="background:var(--orange)"></div><div><div class="et">18:30</div><div class="en">Gym · PT</div></div></div>
+            <div class="ev"><div class="bar" style="background:var(--purple)"></div><div><div class="et">21:00</div><div class="en">ChartSignal Code Review</div></div></div>
+          </div>
+        </div>
+
+        <!-- Event 추가 팝오버 -->
+        <div class="add-sheet" style="width:240px">
+          <h4>New Event</h4>
+          <div class="add-field">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            Team Sync
+          </div>
+          <div class="add-field" style="font-size:12px;color:var(--t2)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Today · 3:00 – 4:00 PM
+          </div>
+          <div class="btn-row">
+            <button class="btn cancel">Cancel</button>
+            <button class="btn add-btn">+ Add to Calendar</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="caption">
+    <span style="background:linear-gradient(90deg,#fff 60%,rgba(255,255,255,.55));-webkit-background-clip:text;-webkit-text-fill-color:transparent">
+      Connect your Google account and <span style="-webkit-text-fill-color:var(--blue)">every event appears on your new tab</span>
+    </span>
+  </div>
+</div>
+</body>
+</html>
